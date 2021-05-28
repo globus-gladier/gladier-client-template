@@ -27,7 +27,6 @@ if __name__ == '__main__':
     dest_file = ''
     dest_dir = '/home/ubuntu/demo'
 
-
     ##Local endpoints
     local_globus_endpoint='6edd58d2-bfdb-11eb-bddc-5111456017d9'
 
@@ -45,6 +44,8 @@ if __name__ == '__main__':
 
             'transfer_recursive': False,
 
+            'prime_threshould': 200,
+
             # funcX endpoints
             "funcx_endpoint_compute": dest_funcx_endpoint,
 
@@ -61,14 +62,4 @@ if __name__ == '__main__':
     example_flow = exampleClient.run_flow(flow_input=base_input)
     print("  File : " + base_input["input"]["transfer_source_path"])
     print("  UUID : " + example_flow['action_id'])
-
-
-    flow_def = exampleClient.flow_definition
-    import json
-    with open('flow.txt', 'w') as outfile:
-        json.dump(flow_def, outfile)
-
-    pprint(flow_def)
-
-
 
