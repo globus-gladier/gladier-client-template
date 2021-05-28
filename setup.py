@@ -23,6 +23,8 @@ setup(
     maintainer_email='',
     version=version,
     packages=find_packages(),
+    include_package_data = True,
+    scripts=['bin/gladier_*'],
     install_requires=install_requires,
     dependency_links=[],
     license='Apache 2.0',
