@@ -21,12 +21,21 @@ setup(
     url='https://github.com/globus-gladier/gladier-client-template',
     maintainer='The Gladier Team',
     maintainer_email='',
-    version=version,
+    version=version_ns['__version__'],
     packages=find_packages(),
-    include_package_data = True,
-    scripts=['bin/gladier_*'],
     install_requires=install_requires,
     dependency_links=[],
     license='Apache 2.0',
-    classifiers=[]
+    classifiers=[
+        'Intended Audience :: Science/Research',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: Apache Software License',
+        'Operating System :: POSIX',
+        'Operating System :: MacOS :: MacOS X',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+    ]
 )
