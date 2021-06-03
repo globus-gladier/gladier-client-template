@@ -44,8 +44,6 @@ if __name__ == '__main__':
 
             'transfer_recursive': False,
 
-            'prime_threshould': 200,
-
             # funcX endpoints
             "funcx_endpoint_compute": dest_funcx_endpoint,
 
