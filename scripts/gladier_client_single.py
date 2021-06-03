@@ -57,3 +57,9 @@ if __name__ == '__main__':
 
 
 
+    exampleClient = Example_Client()
+
+
+    example_flow = exampleClient.run_flow(flow_input=base_input)
+    print("  File : " + base_input["input"]["transfer_source_path"])
+    print("  UUID : " + example_flow['action_id'])
