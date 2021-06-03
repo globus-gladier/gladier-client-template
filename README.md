@@ -3,11 +3,14 @@
 
 ## Installing
 
-    conda create -n gladier-test
+    conda create -n gladier-test python=3.8 pip ipython jupyter
+    conda activate gladier-test
     pip install funcx==0.0.5
     pip install globus_automate_client
 
     git clone https://github.com/globus-gladier/gladier-client-template
+    cd gladier-client-template
+    python setup.py develop
 
 ## Creating a new gladier client
 
