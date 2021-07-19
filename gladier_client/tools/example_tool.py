@@ -1,7 +1,7 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
 
-def add_text(data):
+def example_function(**data):
     import os
     wfile = data['file']
     text = data['text']
@@ -15,8 +15,8 @@ def add_text(data):
     return wfile
 
 @generate_flow_definition
-class AddText(GladierBaseTool):
-    funcx_functions = [add_text]
+class ExampleTool(GladierBaseTool):
+    funcx_functions = [example_function]
     required_input = [
         'file',
         'text', 

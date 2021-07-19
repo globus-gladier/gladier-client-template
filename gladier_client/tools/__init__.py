@@ -1,4 +1,4 @@
-from .add_text import AddText
+from .example_tool import ExampleTool
 from .example_transfer import ExampleTransfer
 
-__all__ = ['AddText', 'ExampleTransfer']
+__all__ = ['ExampleTool', 'ExampleTransfer']

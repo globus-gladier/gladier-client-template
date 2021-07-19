@@ -1,4 +1,4 @@
-gladier>=0.0.2
+gladier
 gladier-tools
-funcx==0.0.5
+funcx
 globus_automate_client

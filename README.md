@@ -43,8 +43,6 @@ basic_funcx_flow
 ### Basic Gladier Client demo
 gladier_basic_client
 
-### Complete Gladier Client demo
-(UNDER CONSTRUCTION)
 
 ## Todo 
 
