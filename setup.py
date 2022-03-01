@@ -1,5 +1,7 @@
+"""Python setup.py for gladier_client package"""
+import io
 import os
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 
 # single source of truth for package version
 version_ns = {}
@@ -11,7 +13,7 @@ install_requires = []
 with open('requirements.txt') as reqs:
     for line in reqs.readlines():
         req = line.strip()
-        if not req or req.startswith('#'):
+        if not req or req.startswith(('"', "#", "-", "git+")):
             continue
         install_requires.append(req)
 
@@ -22,15 +24,14 @@ setup(
     maintainer='The Gladier Team',
     maintainer_email='',
     version=version_ns['__version__'],
-    packages=find_packages(),
+    packages=find_packages(exclude=["tests", ".github"]),
     install_requires=install_requires,
     scripts=[],
     dependency_links=[],
-    license='Apache 2.0',
-    classifiers=[
-        'Intended Audience :: Science/Research',
-        'Intended Audience :: Developers',
-        'Operating System :: POSIX',
-        'Programming Language :: Python',
-    ]
 )
+
+
+
+
+    
+    
