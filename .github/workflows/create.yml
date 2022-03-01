@@ -13,12 +13,11 @@ jobs:
         
       - name: Rename the project
         run: |
-          echo ".github/rename_project.sh -a ${{ github.repository_owner }} -n $${{ github.repository }} -u ${{ github.repositoryUrl }}"
+          echo ".github/rename_project.sh -a ${{ github.repository_owner }} -n ${{ github.repository }} -u ${{ github.repositoryUrl }}"
           # .github/rename_project.sh -a ${{ env.REPOSITORY_OWNER }} -n ${{ env.REPOSITORY_NAME }} -u ${{ env.REPOSITORY_URLNAME }}"
               
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "✅ Ready to clone and code."
-          # commit_options: '--amend --no-edit'
           push_options: --force
 
