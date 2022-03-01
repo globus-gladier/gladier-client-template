@@ -3,12 +3,12 @@
 
 ## Installing
 
-The main core of gladier uses Globus for transfers and FuncX for executions.
+This is an example on how to set your gladier The main core of gladier uses Globus for transfers and FuncX for executions.
 
 ### Installing Gladier 
 
-    conda create -n gladier-test python=3.8 pip ipython jupyter
-    conda activate gladier-test
+    conda create -n gladier pip
+    conda activate gladier
 
     git clone https://github.com/globus-gladier/gladier-client-template
     cd gladier-client-template
@@ -17,9 +17,12 @@ The main core of gladier uses Globus for transfers and FuncX for executions.
 
     python setup.py develop
 
-### Installing Globus Transfer endpoint
 
-### Installing FuncX endpoint
+### Establishing the Data Fabric
+
+#### Installing Globus Transfer endpoint
+
+#### Installing FuncX endpoint
 
 ## Creating a new gladier client
 
@@ -42,9 +45,3 @@ basic_funcx_flow
 
 ### Basic Gladier Client demo
 gladier_basic_client
-
-
-## Todo 
-
-- Create rename.sh script to automate the template creation
-- Can we do that at github workflows?

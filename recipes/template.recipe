@@ -1,0 +1,18 @@
+Bootstrap: docker
+From: ubuntu:latest
+
+%post
+
+  export DEBIAN_FRONTEND=noninteractive
+
+  apt-get update
+  apt-get install -y python-is-python3 python3-pip git 
+  rm -rf /var/lib/apt/lists/*
+  pip install funcx
+  pip install funcx-endpoint
+
+  mkdir -p /container
+  cd container
+  ##Install your software here
+
+  unset DEBIAN_FRONTEND

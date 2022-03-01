@@ -1,2 +1,0 @@
-# gladier-client-template
-
