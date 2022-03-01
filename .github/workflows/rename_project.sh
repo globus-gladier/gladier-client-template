@@ -3,7 +3,7 @@
 repo_name=$1
 
 name=$(echo $repo_name | awk -F '/' '{print $2}' | tr '-' '_' | tr '[:upper:]' '[:lower:]')
-owner=$(echo $repo_name | awk -F '/' '{print $1}')
+author=$(echo $repo_name | awk -F '/' '{print $1}')
 urlname=$(echo $repo_name)
 
 original_author="The Gladier Team"
