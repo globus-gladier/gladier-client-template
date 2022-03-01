@@ -1,9 +1,9 @@
 name: Init repo
-on: [create, push]
+on: [push]
 
 jobs:
   rename-project:
-    if: ${{ !contains (github.repository, '/gladier_client') }}
+    if: ${{ !contains (github.repository, 'gladier-client-template') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -13,8 +13,7 @@ jobs:
         
       - name: Rename the project
         run: |
-          echo ".github/rename_project.sh -a ${{ github.repository_owner }} -n ${{ github.repository }} -u ${{ github.repositoryUrl }}"
-          # .github/rename_project.sh -a ${{ env.REPOSITORY_OWNER }} -n ${{ env.REPOSITORY_NAME }} -u ${{ env.REPOSITORY_URLNAME }}"
+          .github/rename_project.sh ${{ github.repository }}
               
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:

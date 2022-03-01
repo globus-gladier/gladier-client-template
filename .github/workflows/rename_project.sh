@@ -1,39 +1,35 @@
 #!/usr/bin/env bash
-while getopts a:n:u:d: flag
-do
-    case "${flag}" in
-        a) author=${OPTARG};;
-        n) name=${OPTARG};;
-        u) urlname=${OPTARG};;
-        d) description=${OPTARG};;
-    esac
-done
 
-echo "Author: $author";
-echo "Project Name: $name";
-echo "Project URL name: $urlname";
-echo "Description: $description";
+repo_name=$1
 
-echo "Renaming project..."
+name=$(echo $repo_name | awk -F '/' '{print $2}' | tr '-' '_' | tr '[:upper:]' '[:lower:]')
+owner=$(echo $repo_name | awk -F '/' '{print $1}')
+urlname=$(echo $repo_name)
 
-original_author="author_name"
-original_name="project_name"
-original_urlname="project_urlname"
-original_description="project_description"
-# for filename in $(find . -name "*.*") 
+original_author="The Gladier Team"
+original_name="gladier_client" 
+original_urlname="globus-gladier/gladier-client-template"
+
+echo $original_name
+echo $name
+
+echo $original_author
+echo $author
+
+echo $original_urlname
+echo $urlname
+
 for filename in $(git ls-files) 
 do
     sed -i "s/$original_author/$author/g" $filename
     sed -i "s/$original_name/$name/g" $filename
     sed -i "s/$original_urlname/$urlname/g" $filename
-    sed -i "s/$original_description/$description/g" $filename
     echo "Renamed $filename"
 done
 
 mv gladier_client $name
 
-# This command runs only once on GHA!
-rm -f .github/workflows/create.yml
-rm -f .github/rename_project.sh
-rm CHANGELOG.md
+rm -rf .github/workflows
+rm -rf .github/rename_project.sh
+rm -rf CHANGELOG.md
 

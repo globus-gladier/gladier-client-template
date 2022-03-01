@@ -18,8 +18,8 @@ with open('requirements.txt') as reqs:
         install_requires.append(req)
 
 setup(
-    name='gladier-client',
-    description='The Gladier Client Template',
+    name='gladier_client',
+    description='Gladier Client Template',
     url='https://github.com/globus-gladier/gladier-client-template',
     maintainer='The Gladier Team',
     maintainer_email='',
