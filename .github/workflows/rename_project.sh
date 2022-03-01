@@ -1,31 +1,38 @@
 #!/usr/bin/env bash
 
-repo_name=$1
+full_name=$1
 
-name=$(echo $repo_name | awk -F '/' '{print $2}' | tr '-' '_' | tr '[:upper:]' '[:lower:]')
-author=$(echo $repo_name | awk -F '/' '{print $1}')
-urlname=$(echo $repo_name)
+echo $full_name
 
+repo=$(echo $full_name | awk -F '/' '{print $2}')
+author=$(echo $full_name | awk -F '/' '{print $1}')
+owner=$(echo $full_name | awk -F '/' '{print $1}')
+package=$(echo $full_name | awk -F '/' '{print $2}' | tr '-' '_' | tr '[:upper:]' '[:lower:]')
+
+original_repo="gladier-client-template"
 original_author="The Gladier Team"
-original_name="gladier_client" 
-original_urlname="globus-gladier/gladier-client-template"
+original_owner="globus-gladier"
+original_package="gladier_client" 
 
-echo $original_name
-echo $name
-
-echo $original_author
+echo $repo
+echo $original_repo
+echo $owner
+echo $original_owner
+echo $package
+echo $original_package
 echo $author
-
-echo $original_urlname
-echo $urlname
+echo $original_author
 
 for filename in $(git ls-files) 
 do
+    sed -i "s/$original_repo/$repo/g" $filename
     sed -i "s/$original_author/$author/g" $filename
-    sed -i "s/$original_name/$name/g" $filename
-    sed -i "s/$original_urlname/$urlname/g" $filename
+    sed -i "s/$original_owner/$owner/g" $filename
+    sed -i "s/$original_package/$package/g" $filename
     echo "Renamed $filename"
 done
+
+sed '5,16d' README.md
 
 mv gladier_client $name
 
