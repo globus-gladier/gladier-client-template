@@ -30,6 +30,5 @@ done
 mv gladier_client $name
 
 rm -rf .github/workflows
-rm -rf .github/rename_project.sh
 rm -rf CHANGELOG.md
 

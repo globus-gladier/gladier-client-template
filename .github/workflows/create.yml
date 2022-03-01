@@ -13,7 +13,7 @@ jobs:
         
       - name: Rename the project
         run: |
-          .github/rename_project.sh ${{ github.repository }}
+          .github/workflows/rename_project.sh ${{ github.repository }}
               
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
