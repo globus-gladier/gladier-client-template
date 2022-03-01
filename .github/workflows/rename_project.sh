@@ -32,7 +32,7 @@ do
     echo "Renamed $filename"
 done
 
-sed '5,16d' README.md
+sed -i "3,14d" README.md
 
 mv gladier_client $name
 
