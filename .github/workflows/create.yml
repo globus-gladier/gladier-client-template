@@ -1,8 +1,5 @@
 name: Init repo
-on:
-  push:
-    branches:
-      - main
+on: [create]
 
 jobs:
   rename-project:
