@@ -14,8 +14,10 @@ class SimpleDep(BaseDeployment):
         'funcx_endpoint_non_compute' : 'xxx',
         'funcx_endpoint_compute'     : 'yyy'
     }
-    inputs = {
-        'search_index' : 'zzz',
+    flow_input = {
+        'input': {
+            'search_index' : 'zzz',
+        }
     }
 
 
