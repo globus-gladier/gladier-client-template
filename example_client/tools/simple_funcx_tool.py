@@ -1,10 +1,10 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
 
-def example_function(**data):
+def simple_function(**data):
     import os
     wfile = data['file']
-    text = data['text']
+    text = data['name']
 
     if '~' in wfile:
         wfile = os.path.expanduser(wfile)
@@ -15,10 +15,10 @@ def example_function(**data):
     return wfile
 
 @generate_flow_definition
-class ExampleTool(GladierBaseTool):
-    funcx_functions = [example_function]
+class SimpleTool(GladierBaseTool):
+    funcx_functions = [simple_function]
     required_input = [
         'file',
-        'text', 
+        'name', 
         'funcx_endpoint_compute'
         ]
