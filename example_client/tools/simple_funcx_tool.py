@@ -4,7 +4,7 @@ from gladier import GladierBaseTool, generate_flow_definition
 def simple_function(**data):
     import os
     wfile = data['file']
-    text = data['text']
+    text = data['name']
 
     if '~' in wfile:
         wfile = os.path.expanduser(wfile)
@@ -19,6 +19,6 @@ class SimpleTool(GladierBaseTool):
     funcx_functions = [simple_function]
     required_input = [
         'file',
-        'text', 
+        'name', 
         'funcx_endpoint_compute'
         ]
