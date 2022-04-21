@@ -1,10 +1,7 @@
 from gladier import GladierBaseTool, generate_flow_definition
 
-
-def simple_function(**data):
+def simple_function(wfile = None, text = None, **data):
     import os
-    wfile = data['file']
-    text = data['name']
 
     if '~' in wfile:
         wfile = os.path.expanduser(wfile)
