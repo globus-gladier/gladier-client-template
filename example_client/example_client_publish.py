@@ -29,16 +29,6 @@ if __name__ == '__main__':
 
     args = arg_parse()
 
-
-   ##The first step Client instance
-    exampleClient = Example_Client()
-    print('Flow created with ID: ' + exampleClient.get_flow_id())
-    print('https://app.globus.org/flows/' + exampleClient.get_flow_id())
-    print('')
-    ##Label for the current run (This is the label that will be presented on the globus webApp)
-    client_run_label = 'ExampleGladierFlow'
-
-
     ## Flow inputs necessary for each tool on the flow definition.
     flow_input = {
         'input': {
@@ -52,7 +42,14 @@ if __name__ == '__main__':
     print('Created payload.')
     pprint(flow_input)
     print('')
- 
+    ##Client instance
+    exampleClient = Example_Client()
+    print('Flow created with ID: ' + exampleClient.get_flow_id())
+    print('https://app.globus.org/flows/' + exampleClient.get_flow_id())
+    print('')
+    ##Label for the current run (This is the label that will be presented on the globus webApp)
+    client_run_label = 'ExampleGladierFlow'
+
     ##Flow execution
     flow_run = exampleClient.run_flow(flow_input=flow_input, label=client_run_label)
 
