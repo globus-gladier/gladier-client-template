@@ -23,7 +23,7 @@
 
 Our first example can be found at `example_client/example_client.py`. It creates and executes a flow with one operation.
 
-   python example_client/example_client.py
+   ./example_client/example_client.py
 
 To execute a remote function (the equivalent of a `lambda`) we use the funcX service to register, retrieve and execute functions. The service requires that a small instance client is deployed at the "processing" machine. We have a client running at one of our example machines. The location of this client is defined by:
 
@@ -48,7 +48,7 @@ Running the client again will not register a new flow with the globus service bu
 Our second example can be found at `example_client/example_client_transfer.py`. It transfer a file from our remote server into your workstation. 
 In order to allow for transfer, the first step is to introduce the workstation in the the creates and executes a flow with one operation.
 
-   python example_client/example_client_transfer.py
+   ./example_client/example_client_transfer.py
 
 
 ## Creating a flow with Publish
@@ -56,7 +56,35 @@ In order to allow for transfer, the first step is to introduce the workstation i
 Our Third example can be found at `example_client/example_client_publish.py`. It do a simple operation of publishing some data into a globus index.
 As before, it requires the setup of a globus index and how to visualize it. 
 
-   python example_client/example_client_publish.py
+    pip install globus-search-cli
+    globus-search login
+    globus-search index create example-index gladier-example-index
+
+The result is a new search index on the globus-search database which will serve as a "repository" for the flow data.
+
+    {
+       "@datatype": "GSearchIndex",
+       "@version": "2017-09-01",
+       "creation_date": "2022-04-27 21:04:30",
+       "description": "gladier-example-index",
+       "display_name": "example-index",
+       "id": "563c3d98-6fa8-4ef5-83e2-0f378efe0a5f",
+       "is_trial": true,
+       "max_size_in_mb": 1,
+       "num_entries": 0,
+       "num_subjects": 0,
+       "size_in_mb": 0,
+       "status": "open",
+       "subscription_id": null
+    }    
+
+The search index id `563c3d98-6fa8-4ef5-83e2-0f378efe0a5f` will be used so the flow knows where to send metadata too.
+
+To execute our simple publish client
+
+   ./example_client/example_client_publish.py
+
+To check if the data went to the index try this check https://acdc.alcf.anl.gov/globus-tutorial/563c3d98-6fa8-4ef5-83e2-0f378efe0a5f
 
 
 ## Making this template into a client
