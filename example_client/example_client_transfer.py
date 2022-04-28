@@ -19,7 +19,6 @@ class Example_Client(GladierBaseClient):
         SimpleTransfer,
     ]
 
-
 ##  Arguments for the execution of this file as a stand-alone client
 def arg_parse():
     parser = argparse.ArgumentParser()
@@ -31,21 +30,37 @@ if __name__ == '__main__':
 
     args = arg_parse()
 
+    ##EDIT HERE
+    # Local endpoint UUID (refer to README for more information)    
+    localdir = args.dir
+    local_endpoint_id = 'cde22510-5de7-11ec-9b5c-f9dfb1abb183' 
+    ##
+
+    ## A full link for both local and remote endpoints can be found below. 
+    # The link should work otherwise it gives the user a manner of debugging permission to the endpoints/path
+    # A transfer that cannot be done through the webApp will not be available to be done manually
+    print('Monitor the data being transfered:')
+    print('https://app.globus.org/file-manager?destination_id='+local_endpoint_id+'&destination_path=%2F~%2F&origin_id=ef4203ca-6510-466c-9bff-a5d2cc316673&origin_path=%2Fdemo%2Fanimals%2F')
+
+
     ##The first step Client instance
     exampleClient = Example_Client()
     print('Flow created with ID: ' + exampleClient.get_flow_id())
     print('https://app.globus.org/flows/' + exampleClient.get_flow_id())
     print('')
 
+
+
     ## Flow inputs necessary for each tool on the flow definition.
     flow_input = {
         'input': {
-            'localdir': os.path.expanduser(args.dir), 
-            'file' : '/test/test.txt',
-            'simple_transfer_source_path':'xxx',
-            'simple_transfer_destination_path':'xxx',
-            'simple_transfer_source_endpoint_id':'xxx',
-            'simple_transfer_destination_endpoint_id':'xxx',
+            #local server information
+            'simple_transfer_source_endpoint_id': ,
+            'simple_transfer_source_path': os.path.expanduser(args.dir),
+
+            #remote server information
+            'simple_transfer_destination_endpoint_id':'ef4203ca-6510-466c-9bff-a5d2cc316673',
+            'simple_transfer_destination_path':'/demo/animals/',
         }
     }
     print('Created payload.')
@@ -55,9 +70,10 @@ if __name__ == '__main__':
     ##Label for the current run (This is the label that will be presented on the globus webApp)
     client_run_label = 'Gladier TransferFlow Example'
 
-    ##Flow execution
-#    flow_run = exampleClient.run_flow(flow_input=flow_input, label=client_run_label)
+    #Flow execution
+    flow_run = exampleClient.run_flow(flow_input=flow_input, label=client_run_label)
 
-#    print('Run started with ID: ' + flow_run['action_id'])
-#    print('https://app.globus.org/runs/' + flow_run['action_id'])
+    print('Run started with ID: ' + flow_run['action_id'])
+    print('https://app.globus.org/runs/' + flow_run['action_id'])
     
+

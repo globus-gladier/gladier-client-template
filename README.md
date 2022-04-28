@@ -13,7 +13,22 @@
 
 > **NOTE**: **WAIT** until first CI run on github actions before cloning your new project.
 
+# Your Journey starts here.
+## If you chose to accept it.
+
+Hello traveler, this is your tutorial into the world of automation.
+
+This repository is designed to be a guide through the complexities of Gladier and its tools.
+For full automation of an experiment, there is a step of infrastructure that cannot be ignored. This is usually done once and allows the user to focus on tool development.
+
+Three main operations are included on the simpleClients:
+* Process
+* Transfer
+* Publish
+
 ## Installing Gladier
+
+To run this tutorial we advise that a new environment is created on your favorite tool. For simplicity, we will use miniconda although any development app with access to pip should suffice.
 
     conda create -n gladier-test python pip
     conda activate gladier-test
@@ -33,6 +48,7 @@ Note1: The remote machine is not necessary remote. Different parts of the flow c
 
 Note2: Gladier reads the python function imported by `SimpleTool` and automatically register or re-register(in the case of changes in the local function definition) it with the funcx service. The UUID of this function is automatically populated in the flow definition. 
 
+
 During the execution takes care of creating the flow definition and registering it with the globus service:
 
     Flow created with ID: ddb9d6be-d48f-40df-a663-6bcc6db1bb76                                                              https://app.globus.org/flows/ddb9d6be-d48f-40df-a663-6bcc6db1bb76 
@@ -42,6 +58,12 @@ And also created the run after the `.run()` execution:
     Run started with ID: 6fa0969a-2778-4f7f-95d5-d365e89aca32                                                               https://app.globus.org/runs/6fa0969a-2778-4f7f-95d5-d365e89aca32 
 
 Running the client again will not register a new flow with the globus service but will generate a new run instance.
+
+### Best Practices: 
+The `SimpleTool` and its driving function `simple_function` are separated into a `tools` folder in a single file. We advise to create one python file per "action" in the flows. This makes development and debugging and tracing errors much simpler.
+
+The `example_client.py` itself also is separated from the other clients in the folder and only contain one `GladierBaseClient`. This prevents instances being created with the 'wrong' flow definition or common mistakes on 'what is running'.
+
 
 ## Creating a flow with Transfer
 
