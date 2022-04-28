@@ -8,7 +8,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
+          persist-credentials: false 
           fetch-depth: 0
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           ref: ${{ github.head_ref }}
         
       - name: Rename the project

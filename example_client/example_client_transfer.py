@@ -41,7 +41,7 @@ if __name__ == '__main__':
         os.mkdir(localdir)
 
     ##creating a file to test the transfer
-    with open(os.path.join(localdir,'test.txt'),"w+") as file1:
+    with open(os.path.join(localdir,args.file),"w+") as file1:
         file1.writelines('Awesome Text!')
 
 
