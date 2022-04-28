@@ -36,9 +36,9 @@ To run this tutorial we advise that a new environment is created on your favorit
 
 ## First run on a Gladier Client
 
-Our first example can be found at `example_client/example_client.py`. It creates and executes a flow with one operation.
+Our first example can be found at `simple_clients/example_client.py`. It creates and executes a flow with one operation.
 
-   ./example_client/example_client.py
+   ./simple_clients/example_client.py
 
 To execute a remote function (the equivalent of a `lambda`) we use the funcX service to register, retrieve and execute functions. The service requires that a small instance client is deployed at the "processing" machine. We have a client running at one of our example machines. The location of this client is defined by:
 
@@ -67,15 +67,15 @@ The `example_client.py` itself also is separated from the other clients in the f
 
 ## Creating a flow with Transfer
 
-Our second example can be found at `example_client/example_client_transfer.py`. It transfer a file from our remote server into your workstation. 
+Our second example can be found at `simple_clients/example_client_transfer.py`. It transfer a file from our remote server into your workstation. 
 In order to allow for transfer, the first step is to introduce the workstation in the the creates and executes a flow with one operation.
 
-   ./example_client/example_client_transfer.py
+   ./simple_clients/example_client_transfer.py
 
 
 ## Creating a flow with Publish
 
-Our Third example can be found at `example_client/example_client_publish.py`. It do a simple operation of publishing some data into a globus index.
+Our Third example can be found at `simple_clients/example_client_publish.py`. It do a simple operation of publishing some data into a globus index.
 As before, it requires the setup of a globus index and how to visualize it. 
 
     pip install globus-search-cli
@@ -108,19 +108,34 @@ To execute our simple publish client
 
 To check if the data went to the index try this check https://acdc.alcf.anl.gov/globus-tutorial/563c3d98-6fa8-4ef5-83e2-0f378efe0a5f
 
+## Your journey continues here
 
-## Making this template into a client
+Most flows will be a combination of the examples above. Our next step is to merge all of then into a single flow.
+For simplicity, we start a new client in `/full_client` with a new set of `/tools`
 
-    ./scripts/create_setup.py
+The idea is to create the infrastructure based on the simple_examples and expand it into a flow with:
 
-## Installing gladier_client
+* Transfer
+* Funcx 
+* Publish
 
-    conda create -n gladier pip
-    conda activate gladier
+### Defining the correct payload
 
-    git clone https://github.com/globus-gladier/gladier-client-template
-    cd gladier-client-template
-    
-    pip install -r requirements.txt
 
-    python setup.py develop
+### Using flow modifiers
+
+
+### Importing external functions
+
+### gladier_tools.Publish
+
+
+### Single Instance client
+
+Our flow now is defined on an executable file and can be integrated with any CLI based execution method.
+
+### Creating an event based client
+
+Since our Single Instance Client defines a `run_flow` function that only needs a set defined set of variables to run.
+We can create a FileWatcher that creates this payload whenever a new file is created/modified.
+The watcher itself does not carry any information about the flow.
