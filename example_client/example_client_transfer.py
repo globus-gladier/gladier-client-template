@@ -23,6 +23,7 @@ class Example_Client(GladierBaseClient):
 def arg_parse():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dir', help='Local Transfer Folder', default='~/demo')
+    parser.add_argument('--file', help='Filename for awesome text', default='awesome.txt')
     return parser.parse_args()
 
 ## Main execution of this "file" as a Standalone client
@@ -30,24 +31,29 @@ if __name__ == '__main__':
 
     args = arg_parse()
 
-    if os.path.exists(args.dir):
-        os.mkdir(args.dir)
-
-    with open(os.path.join(args.dir,'test.txt'),"w+") as file1:
-        file1.writelines('Awesome Text!')
-
     ##EDIT HERE
     # Local endpoint UUID (refer to README for more information)    
-    localdir = args.dir
+    localdir = os.path.expanduser(args.dir)
     local_endpoint_id = 'cde22510-5de7-11ec-9b5c-f9dfb1abb183' 
     ##
+
+    if not os.path.exists(localdir):
+        os.mkdir(localdir)
+
+    ##creating a file to test the transfer
+    with open(os.path.join(localdir,'test.txt'),"w+") as file1:
+        file1.writelines('Awesome Text!')
+
+
 
     ## A full link for both local and remote endpoints can be found below. 
     # The link should work otherwise it gives the user a manner of debugging permission to the endpoints/path
     # A transfer that cannot be done through the webApp will not be available to be done manually
+    print('###')
     print('Monitor the data being transfered:')
     print('https://app.globus.org/file-manager?destination_id='+local_endpoint_id+'&destination_path=%2F~%2F&origin_id=ef4203ca-6510-466c-9bff-a5d2cc316673&origin_path=%2Fdemo%2Fanimals%2F')
-
+    print('###')
+    print('')
 
     ##The first step Client instance
     exampleClient = Example_Client()

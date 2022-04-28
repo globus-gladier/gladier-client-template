@@ -30,12 +30,13 @@ class SimpleTransfer(GladierBaseTool):
     }
 
     flow_input = {
-        'simple_transfer_sync_level': 'checksum'
+        'simple_transfer_sync_level': 'checksum',
+        'simple_transfer_recursive': True,
+
     }
     required_input = [
         'simple_transfer_source_path',
         'simple_transfer_destination_path',
         'simple_transfer_source_endpoint_id',
         'simple_transfer_destination_endpoint_id',
-        'simple_transfer_recursive',
     ]
