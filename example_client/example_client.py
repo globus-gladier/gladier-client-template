@@ -41,7 +41,7 @@ if __name__ == '__main__':
     flow_input = {
         'input': {
             'name': args.name, 
-            'file' : '/test/test.txt',
+            'wfile' : '/test/test.txt',
 
             # funcX tutorial endpoint
             'funcx_endpoint_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df',

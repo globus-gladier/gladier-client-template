@@ -22,13 +22,19 @@ class Example_Client(GladierBaseClient):
 ##  Arguments for the execution of this file as a stand-alone client
 def arg_parse():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dir', help='Local Transfer Folder', default='~/')
+    parser.add_argument('--dir', help='Local Transfer Folder', default='~/demo')
     return parser.parse_args()
 
 ## Main execution of this "file" as a Standalone client
 if __name__ == '__main__':
 
     args = arg_parse()
+
+    if os.path.exists(args.dir):
+        os.mkdir(args.dir)
+
+    with open(os.path.join(args.dir,'test.txt'),"w+") as file1:
+        file1.writelines('Awesome Text!')
 
     ##EDIT HERE
     # Local endpoint UUID (refer to README for more information)    
@@ -49,13 +55,14 @@ if __name__ == '__main__':
     print('https://app.globus.org/flows/' + exampleClient.get_flow_id())
     print('')
 
+    
 
 
     ## Flow inputs necessary for each tool on the flow definition.
     flow_input = {
         'input': {
             #local server information
-            'simple_transfer_source_endpoint_id': ,
+            'simple_transfer_source_endpoint_id': local_endpoint_id,
             'simple_transfer_source_path': os.path.expanduser(args.dir),
 
             #remote server information
