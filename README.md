@@ -1,18 +1,5 @@
 # gladier-client-template
 
-## HOW TO USE THIS TEMPLATE
-
-> **DO NOT FORK** this is meant to be used from **[Use this template](https://github.com/globus-gladier/gladier-client-template/generate)** feature.
-
-1. Click on **[Use this template](https://github.com/globus-gladier/gladier-client-template/generate)**
-2. Give a new name to your gladier project  
-   (e.g. `gladier_amazing_science` recommendation is to use all lowercase and underscores separation for repo names.)
-3. Wait until the first run of CI finishes  
-   (Github Actions will process the template and commit to your new repo)
-4. Then clone your new gladier and start tweaking it.
-
-> **NOTE**: **WAIT** until first CI run on github actions before cloning your new project.
-
 Step-by-step guide into creating a fully automated experiment with the use of [Globus](https://www.globus.org) tools. This guide was designed to use [Gladier](https://www.gladier.org). A full documentation can ben found at [Gladier Read the Docs](https://gladier.readthedocs.io/). Further reading include [FuncX](https://www.funcx.org) to get familiar with the remote execution used on our automation. 
 
 ## Your Journey starts here.
