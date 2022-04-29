@@ -13,22 +13,30 @@
 
 > **NOTE**: **WAIT** until first CI run on github actions before cloning your new project.
 
-# Your Journey starts here.
-## If you chose to accept it.
+Step-by-step guide into creating a fully automated experiment with the use of [Globus](https://www.globus.org) tools. This guide was designed to use [Gladier](https://www.gladier.org). A full documentation can ben found at [Gladier Read the Docs](https://gladier.readthedocs.io/). Further reading include [FuncX](https://www.funcx.org) to get familiar with the remote execution used on our automation. 
 
-Hello traveler, this is your tutorial into the world of automation.
+## Your Journey starts here.
+### If you chose to accept it.
+------------------------------
+Hello traveler. Welcome to the guide into the _Globus Architecture for Data-Intensive Experimental Research_, in short, GLADIER. 
 
-This repository is designed to be a guide through the complexities of Gladier and its tools.
-For full automation of an experiment, there is a step of infrastructure that cannot be ignored. This is usually done once and allows the user to focus on tool development.
+This repository is designed to be a step-by-step guide through the complexities of Gladier and its tools.
+For full automation of an experiment, there is infrastructure setup's that cannot be ignored. This is usually done once and allows the user to focus on tool development. A sequence of actions will be described as a flow.
 
-Three main operations are included on the simpleClients:
-* Process
-* Transfer
-* Publish
+    > *Flow* refers to a sequence of actions that are applied given a collection of variables. This sequence have a `recipe` or *flow-definition* that needs to be specified. This flow-definition contains all information necessary to execute each step of the flow, including:
+    * *What's*: Actions that will be executed
+    * *Where's*: Where which action will be executed
+    * *When's*: Sequence that each action gets executed
+
+A **client** is the code that defines all necessary information to run a flow. To simplify the understanding of each step, we created flows with just one step represeting the three main operations, which are:
+
+* **Process** found at `simple_clients/example_client_process.py`
+* **Transfer** found at `simple_clients/example_client_transfer.py`
+* **Publish** found at `simple_clients/example_client_publish.py`
 
 ## Installing Gladier
 
-To run this tutorial we advise that a new environment is created on your favorite tool. For simplicity, we will use miniconda although any development app with access to pip should suffice.
+To run this tutorial we advise that a new python environment is created. For simplicity, we will use [miniconda](https://docs.conda.io/en/latest/miniconda.html).
 
     conda create -n gladier-test python pip
     conda activate gladier-test
@@ -36,47 +44,83 @@ To run this tutorial we advise that a new environment is created on your favorit
 
 ## First run on a Gladier Client
 
-Our first example can be found at `simple_clients/example_client.py`. It creates and executes a flow with one operation.
+Our first example can be found at `simple_clients/example_client_process.py`. It creates a single step flow that executes a python function remotely.
 
-   ./simple_clients/example_client.py
+   ./simple_clients/example_client_process.py
 
-To execute a remote function (the equivalent of a `lambda`) we use the funcX service to register, retrieve and execute functions. The service requires that a small instance client is deployed at the "processing" machine. We have a client running at one of our example machines. The location of this client is defined by:
+In order to execute a remote function (the equivalent of a `lambda`) we use the funcX service to register, retrieve and execute functions. The service requires that a small instance client is deployed at the "processing" machine. We have a client running at one of our example machines. The location of this client is defined by:
 
     'funcx_endpoint_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df'
 
-Note1: The remote machine is not necessary remote. Different parts of the flow can be executed on different machines by changing the `funcx_endpoint_compute` value for each tool. This will be explored on a further section.
 
-Note2: Gladier reads the python function imported by `SimpleTool` and automatically register or re-register(in the case of changes in the local function definition) it with the funcx service. The UUID of this function is automatically populated in the flow definition. 
+> **Funcx Client** is installed at each of the processing machines and gives the flow the ability to `send` functions to be executed. Note that the remote machine is not necessary remote (or in other words, it can be the same machine executing the flow). Different parts of the flow can be executed on different machines by changing the `funcx_endpoint_compute` value for each tool. This will be explored on a further section.
 
+On our example, the function definition is define inside `tools/simple_funcx_tool.by` and imported into the client as `SimpleTool`. Gladier automatically checks for updates on the function definition and register or re-register(in the case of changes in the local function definition) it with the funcx service. The UUID of this function is automatically populated in the flow definition. 
 
-During the execution takes care of creating the flow definition and registering it with the globus service:
+Before the execution the `input` variables need to be defined and contain **all** information necessary for the flow. In our case, that includes the inputs for the remote python function (`name` and `wfile`) and also the location of the processing resource `funcx_endpoint_compute`.
+
+    flow_input = {
+        'input': {
+            'name': args.name, 
+            'wfile' : '/test/test.txt',
+
+            # funcX tutorial endpoint
+            'funcx_endpoint_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
+        }
+    }
+
+At the next step in the execution, Gladier looks for changes in the Tool definition and tool sequence, then takes care of creating the flow definition and (re-)registering it with the globus automate service. Once a flow is created, it can be accessed in the globus webApp like the link below.
 
     Flow created with ID: ddb9d6be-d48f-40df-a663-6bcc6db1bb76                                                              https://app.globus.org/flows/ddb9d6be-d48f-40df-a663-6bcc6db1bb76 
 
-And also created the run after the `.run()` execution:
+Once a flow is `.run()` it generates a unique UUID for that particular set of flow definition and payload. The log can also be accessed at the webApp:
 
     Run started with ID: 6fa0969a-2778-4f7f-95d5-d365e89aca32                                                               https://app.globus.org/runs/6fa0969a-2778-4f7f-95d5-d365e89aca32 
 
 Running the client again will not register a new flow with the globus service but will generate a new run instance.
 
-### Best Practices: 
-The `SimpleTool` and its driving function `simple_function` are separated into a `tools` folder in a single file. We advise to create one python file per "action" in the flows. This makes development and debugging and tracing errors much simpler.
+### Best Practices:
 
-The `example_client.py` itself also is separated from the other clients in the folder and only contain one `GladierBaseClient`. This prevents instances being created with the 'wrong' flow definition or common mistakes on 'what is running'.
+* We suggest keeping the client `def` outsite of the `__main__` function of the python file. Then creating an instance at `__main__` and using `.run()`.
+* Each tool in the flow have separate `required_inputs` that need to be included in the initial payload. 
+* The `SimpleTool` and its driving function `simple_funcx_function` are separated into a `tools` folder in a single file. We advise to create one python file per "action" in the flows. This makes development and debugging and tracing errors much simpler.
+* The `example_client.py` itself also is separated from the other clients in the folder and only contain one `GladierBaseClient`. This prevents instances being created with the 'wrong' flow definition or common mistakes on 'what is running'.
 
 
 ## Creating a flow with Transfer
 
 Our second example can be found at `simple_clients/example_client_transfer.py`. It transfer a file from our remote server into your workstation. 
-In order to allow for transfer, the first step is to introduce the workstation in the the creates and executes a flow with one operation.
+In order to allow for transfer, the first step is to introduce the workstation in the the creates and executes another 1-step flow. This flow will create a file on the local filesystem and send it to our remote server.
 
-   ./simple_clients/example_client_transfer.py
+> Before executing this file, please create **Globus Endpoint** at your machine following the instructions at: `https://www.globus.org/globus-connect-personal` after the installation you will receive a UUID of your machine (which is now a `storage endpoint`) and update line 38 with your own uuid.
 
+    local_endpoint_id = 'cde22510-5de7-11ec-9b5c-f9dfb1abb183' 
+
+Now go ahead and execute the code.
+
+    ./simple_clients/example_client_transfer.py
+
+Notice how in this case the `input` is different. Now defining the `source_id`, `source_path`, `remote_id`,`remote_path`.  
+
+    flow_input = {
+        'input': {
+            #local server information
+            'simple_transfer_source_endpoint_id': local_endpoint_id,
+            'simple_transfer_source_path': os.path.expanduser(args.dir),
+
+            #remote server information
+            'simple_transfer_destination_endpoint_id':'ef4203ca-6510-466c-9bff-a5d2cc316673',
+            'simple_transfer_destination_path':'/demo/animals/',
+        }
+    }
+
+You can see the files transfered on the [globus app](https://app.globus.org/file-manager), the code will also print a direct link showing both your endpoint and the remote one.
 
 ## Creating a flow with Publish
 
-Our Third example can be found at `simple_clients/example_client_publish.py`. It do a simple operation of publishing some data into a globus index.
-As before, it requires the setup of a globus index and how to visualize it. 
+Our Third 1-step example can be found at `simple_clients/example_client_publish.py`. It do a simple operation of publishing some data into a globus index.
+
+As before, it requires the setup of a `globus index` and how to visualize it.
 
     pip install globus-search-cli
     globus-search login
@@ -84,20 +128,13 @@ As before, it requires the setup of a globus index and how to visualize it.
 
 The result is a new search index on the globus-search database which will serve as a "repository" for the flow data.
 
-    {
-       "@datatype": "GSearchIndex",
+    {  "@datatype": "GSearchIndex",
        "@version": "2017-09-01",
        "creation_date": "2022-04-27 21:04:30",
        "description": "gladier-example-index",
        "display_name": "example-index",
        "id": "563c3d98-6fa8-4ef5-83e2-0f378efe0a5f",
-       "is_trial": true,
-       "max_size_in_mb": 1,
-       "num_entries": 0,
-       "num_subjects": 0,
-       "size_in_mb": 0,
-       "status": "open",
-       "subscription_id": null
+       ...
     }    
 
 The search index id `563c3d98-6fa8-4ef5-83e2-0f378efe0a5f` will be used so the flow knows where to send metadata too.
@@ -108,34 +145,59 @@ To execute our simple publish client
 
 To check if the data went to the index try this check https://acdc.alcf.anl.gov/globus-tutorial/563c3d98-6fa8-4ef5-83e2-0f378efe0a5f
 
-## Your journey continues here
+## Stop!
 
-Most flows will be a combination of the examples above. Our next step is to merge all of then into a single flow.
-For simplicity, we start a new client in `/full_client` with a new set of `/tools`
+At this point. You have the tools to create 1-step flows. We suggest you play with the examples and create your own python functions. Some ideas:
+
+* Create your own funcx endpoint and try executing functions at your own machine. One simple way to see where is being executed is to create a file at your desktop.
+* Now try transfering this file into our remote server
+* And retrieving the information of this file and adding to your search index.
+* Try downloading the file from the globusApp
+
+## Your journey continues here
+### You shall pass!
+
+Most flows will be a combination of the steps above. Our next step is to merge all of then into a single flow.
+For simplicity, we start a new client in `/full_client` with a new set of `/tools`. This time, we will focus on how to execute it all at once.
 
 The idea is to create the infrastructure based on the simple_examples and expand it into a flow with:
 
 * Transfer
 * Funcx 
+* Funcx 
 * Publish
 
 ### Defining the correct payload
 
+As you noticed above, each 1-step flow have different payloads. Now, all the `input` variables need to be defined at once.
+
+> **Best practice** the name of each variable on the payload should match the input name of the variables on the funcx functions. Keeping then separate and well commented on the client makes debugging much faster for you and others.
 
 ### Using flow modifiers
 
+Auto creating the flow definitions is great but sometimes you may want to change variables like "Timeouts" or which endpoint will execute each function
+
+> **Best practice** for machines that require `queieng` we define two endpoints `funcx_endpoint_non_compute` at the head node and `funcx_endpoint_compute` at the queued nodes. Note that since they live in the machine, they share the same `globus_endpoint` and therefore can access the same files. You can use the `non_compute` endpoint for funcx functions which do not require lots of compute power.
 
 ### Importing external functions
+
+Functions may already been created by you or others. You can importa a `GladierBaseTool` from a different package and include it directly into your flow. Gladier will take care of registering the funcx definition with your username.
+
+> **Tip** [Gladier-Tools](https://www.github.com/globus-gladier/gladier-tools) already have lots of tools for posix, transfer and publish operations. In special, `Publish` is very useful to automatically create and ingest metadata based on your experiment. Lets explore it further below.
 
 ### gladier_tools.Publish
 
 
 ### Single Instance client
 
-Our flow now is defined on an executable file and can be integrated with any CLI based execution method.
+Our flow now is defined on an executable file and can be integrated with any CLI based execution method. 
 
 ### Creating an event based client
 
 Since our Single Instance Client defines a `run_flow` function that only needs a set defined set of variables to run.
 We can create a FileWatcher that creates this payload whenever a new file is created/modified.
 The watcher itself does not carry any information about the flow.
+
+## You shall not pass!!
+
+Lets explore what was covered on the example before. 

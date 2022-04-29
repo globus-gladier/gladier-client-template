@@ -32,7 +32,8 @@ if __name__ == '__main__':
     args = arg_parse()
 
     ##EDIT HERE
-    # Local endpoint UUID (refer to README for more information)    
+    # Local endpoint UUID (refer to README for more information)
+    # https://www.globus.org/globus-connect-personal    
     localdir = os.path.expanduser(args.dir)
     local_endpoint_id = 'cde22510-5de7-11ec-9b5c-f9dfb1abb183' 
     ##
