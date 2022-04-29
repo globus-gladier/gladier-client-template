@@ -10,23 +10,18 @@ from gladier import GladierBaseClient, generate_flow_definition
 ##Import tools that will be used on the flow definition
 from tools.transfer_out import TransferOut
 from tools.simple_funcx_tool import SimpleTool
-from tools.simple_publish import SimplePublish
+from tools.gather_metadata import GatherMetadata
+from gladier_tools.publish import Publish
 
 ##Generate flow based on the collection of `gladier_tools` 
 @generate_flow_definition
 class Example_Client(GladierBaseClient):
     gladier_tools = [
-        SimpleTransfer,
+        TransferOut,
         SimpleTool,
-        SimplePublish
+        GatherMetadata,
+        Publish
     ]
-
-
-##  Arguments for the execution of this file as a stand-alone client
-def arg_parse():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--name', help='User Name', default='Bob')
-    return parser.parse_args()
 
 
 ## Main client
@@ -42,6 +37,12 @@ def run_flow(event):
         'input': {
             'name': args.name, 
             'wfile' : '/test/test.txt',
+
+            'transfer_source_endpoint_id':'',
+            'transfer_source_path':'',
+            
+            'transfer_destination_endpoint_id':'',
+            'transfer_destination_path':'',
 
             # funcX tutorial endpoint
             'funcx_endpoint_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
@@ -60,10 +61,15 @@ def run_flow(event):
     print('Run started with ID: ' + flow_run['action_id'])
     print('https://app.globus.org/runs/' + flow_run['action_id'])
 
+##  Arguments for the execution of this file as a stand-alone client
+def arg_parse():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--name', help='User Name', default='Bob')
+    return parser.parse_args()
+
 ## Main execution of this "file" as a Standalone client
 if __name__ == '__main__':
 
     args = arg_parse()
-
     run_flow(args.name)
     

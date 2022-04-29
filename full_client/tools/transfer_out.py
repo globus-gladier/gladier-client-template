@@ -32,7 +32,6 @@ class TransferOut(GladierBaseTool):
     flow_input = {
         'transfer_sync_level': 'checksum',
         'transfer_recursive': True,
-
     }
     required_input = [
         'transfer_source_path',
