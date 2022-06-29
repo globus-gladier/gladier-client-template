@@ -8,16 +8,24 @@ from pprint import pprint
 from gladier import GladierBaseClient, generate_flow_definition
 
 ##Import tools that will be used on the flow definition
-from tools.transfer_out import TransferOut
 from tools.simple_funcx_tool import SimpleTool
 from tools.gather_metadata import GatherMetadata
+
+from gladier_tools.globus.transfer import Transfer
 from gladier_tools.publish import Publish
 
 ##Generate flow based on the collection of `gladier_tools` 
-@generate_flow_definition
+@generate_flow_definition(
+    modifiers={
+        "publish_gather_metadata": {
+            "WaitTime": 240,
+            "payload": "$.GatherMetadata.details.result[0].pilot",
+        },
+    }
+)
 class Example_Client(GladierBaseClient):
     gladier_tools = [
-        TransferOut,
+        Transfer,
         SimpleTool,
         GatherMetadata,
         Publish
