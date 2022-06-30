@@ -31,6 +31,7 @@ To run this tutorial we advise that a new python environment is created. For sim
 
 ## First run on a Gladier Client
 
+
 Our first example can be found at `simple_clients/example_client_process.py`. It creates a single step flow that executes a python function remotely.
 
    ./simple_clients/example_client_process.py
@@ -180,6 +181,7 @@ Functions may already been created by you or others. You can importa a `GladierB
 Our flow now is defined on an executable file and can be integrated with any CLI based execution method. 
 
 ### Creating an event based client
+
 
 Since our Single Instance Client defines a `run_flow` function that only needs a set defined set of variables to run.
 We can create a FileWatcher that creates this payload whenever a new file is created/modified.
