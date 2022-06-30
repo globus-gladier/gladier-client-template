@@ -42,18 +42,23 @@ def run_flow(event):
 
     ## Flow inputs necessary for each tool on the flow definition.
     flow_input = {
-        'input': {
+        'input': {            
+            #Transfer variables
+            'transfer_source_endpoint_id':'',
+            'transfer_source_path':'',
+            'transfer_destination_endpoint_id':'',
+            'transfer_destination_path':'',
+            'transfer_recursive':True,
+
+            #Proccess variables
             'name': args.name, 
             'wfile' : '/test/test.txt',
 
-            'transfer_source_endpoint_id':'',
-            'transfer_source_path':'',
-            
-            'transfer_destination_endpoint_id':'',
-            'transfer_destination_path':'',
-
             # funcX tutorial endpoint
             'funcx_endpoint_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
+            'funcx_endpoint_non_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
+
+            'pilot':{}
         }
     }
     print('Created payload.')
