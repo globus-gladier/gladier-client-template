@@ -18,3 +18,6 @@ sed -i "s/$original_repo/$repo/g" README.md
 
 cp -r full_client $repo
 mv $repo/full_client.py $repo/$repo\_client.py
+
+rm -rf CITATION.cff
+rm -rf .github
