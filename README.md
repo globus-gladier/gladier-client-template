@@ -1,29 +1,30 @@
 # gladier-client-template
 
-Step-by-step guide into creating a fully automated experiment with the use of [Globus](https://www.globus.org) tools. This guide was designed to use [Gladier](https://www.gladier.org). A full documentation can ben found at [Gladier Read the Docs](https://gladier.readthedocs.io/). Further reading include [FuncX](https://www.funcx.org) to get familiar with the remote execution used on our automation. 
+This is a step-by-step guide to creating a fully automated experiment with the use of [Globus](https://www.globus.org) tools via the [Gladier](https://github.com/globus-gladier/gladier) automation library. Full documentation can be found at [Gladier Read the Docs](https://gladier.readthedocs.io/); see also [FuncX](https://www.funcx.org) for information about the remote execution mechanisms used in our automation. 
 
-## Your Journey starts here.
-### If you chose to accept it.
+## Your Journey starts here ...
+### If you choose to accept the challenge.
 ------------------------------
-Hello traveler. Welcome to the guide into the _Globus Architecture for Data-Intensive Experimental Research_, in short, GLADIER. 
+Hello traveler. Welcome to this guide to the _Globus Architecture for Data-Intensive Experimental Research_, in short, GLADIER--a library designed to facilitate the authoring of **flows**, sequences of **actions** (e.g., running a program, transferring data, publishing data) associated with the processing of data from experimental facilities. 
 
-This repository is designed to be a step-by-step guide through the complexities of Gladier and its tools.
-For full automation of an experiment, there is infrastructure setup's that cannot be ignored. This is usually done once and allows the user to focus on tool development. A sequence of actions will be described as a flow.
+This step-by-step guide to the use of Gladier and associated tools will prepare you to author and run multi-step flows.
 
-    > *Flow* refers to a sequence of actions that are applied given a collection of variables. This sequence have a `recipe` or *flow-definition* that needs to be specified. This flow-definition contains all information necessary to execute each step of the flow, including:
-    * *What's*: Actions that will be executed
-    * *Where's*: Where which action will be executed
-    * *When's*: Sequence that each action gets executed
+> A `flow` is a sequence of actions that are to be performed. This sequence is defined by a `recipe` (also known as a *flow-definition*). A flow-definition contains all information necessary to execute each step of the flow, including:<br>
+    * **What**: The actions to be executed <br>
+    * **Where**: Where each action is to be executed <br>
+    * **When**: The order in which the actions are executed
 
-A **client** is the code that defines all necessary information to run a flow. To simplify the understanding of each step, we created flows with just one step represeting the three main operations, which are:
+A **client** is the code that defines all necessary information to run a flow. To simplify understanding, we work here with three example flows that each comprise a single step representing three types of operation:
 
-* **Process** found at `simple_clients/example_client_process.py`
-* **Transfer** found at `simple_clients/example_client_transfer.py`
-* **Publish** found at `simple_clients/example_client_publish.py`
+* The **Process** flow, at `simple_clients/example_client_process.py`, runs a program at a specified location
+* The **Transfer** flow, at `simple_clients/example_client_transfer.py`, transfers data from one location to another
+* The **Publish** flow, at `simple_clients/example_client_publish.py`, loads data and metadata to a catalog
 
 ## Installing Gladier
 
-To run this tutorial we advise that a new python environment is created. For simplicity, we will use [miniconda](https://docs.conda.io/en/latest/miniconda.html).
+For full automation of an experiment, there is infrastructure setup that cannot be ignored. This is usually done once, after which you can focus on tool development. 
+
+We advise creating a new Python environment to run this tutorial. For simplicity, we use [miniconda](https://docs.conda.io/en/latest/miniconda.html):
 
     conda create -n gladier-test python pip
     conda activate gladier-test
@@ -31,21 +32,19 @@ To run this tutorial we advise that a new python environment is created. For sim
 
 ## First run on a Gladier Client
 
-
-Our first example can be found at `simple_clients/example_client_process.py`. It creates a single step flow that executes a python function remotely.
+Our first example, **Process** (`simple_clients/example_client_process.py`) defines a single step flow that executes a Python function at a specified remote location.
 
    ./simple_clients/example_client_process.py
 
-In order to execute a remote function (the equivalent of a `lambda`) we use the funcX service to register, retrieve and execute functions. The service requires that a small instance client is deployed at the "processing" machine. We have a client running at one of our example machines. The location of this client is defined by:
+In order to execute a remote function (the equivalent of a `lambda`) we use the funcX service to register, retrieve, and execute functions. The service requires that a small instance client be deployed at the "processing" machine. We have a client running on one of our example machines. The location of this client is defined by:
 
     'funcx_endpoint_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df'
 
+> Running the **Funcx Client** on a computer gives a flow the ability to `send` functions to be executed on that computer. (This computer may be a remote cluster of cloud, or alternatively the computer on which the flow client executes: funcX runs the same in each case.) As we explore later, different parts of the flow can be executed on different computers by providing different `funcx_endpoint_compute` value for each part.
 
-> **Funcx Client** is installed at each of the processing machines and gives the flow the ability to `send` functions to be executed. Note that the remote machine is not necessary remote (or in other words, it can be the same machine executing the flow). Different parts of the flow can be executed on different machines by changing the `funcx_endpoint_compute` value for each tool. This will be explored on a further section.
+The **Process** flow runs the function defined by `tools/simple_funcx_tool.py` and imported into the client as `SimpleTool`. Gladier automatically checks for updates on the function definition and registers or re-registers (if the local function definition has changed) with the funcx service. The UUID of this function is automatically populated in the flow definition. 
 
-On our example, the function definition is define inside `tools/simple_funcx_tool.by` and imported into the client as `SimpleTool`. Gladier automatically checks for updates on the function definition and register or re-register(in the case of changes in the local function definition) it with the funcx service. The UUID of this function is automatically populated in the flow definition. 
-
-Before the execution the `input` variables need to be defined and contain **all** information necessary for the flow. In our case, that includes the inputs for the remote python function (`name` and `wfile`) and also the location of the processing resource `funcx_endpoint_compute`.
+Before the execution the `input` variables need to be defined to contain **all** information necessary for the flow. In our case, that information includes two input parameters expected by `SimpleTool` (`name` and `wfile`) and the location of the computer where the function is to execute, `funcx_endpoint_compute`.
 
     flow_input = {
         'input': {
