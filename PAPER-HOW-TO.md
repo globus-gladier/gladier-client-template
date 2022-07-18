@@ -36,6 +36,29 @@ For processing, we will define two endpoints, one to execute "cheap" operations 
 
 * Install required packages for computation
 
+### Installing and Configuring your funcX endpoint
+
+We recommend following the [funcX tutorial](https://funcx.readthedocs.io/en/latest/Tutorial.html
+) to get familiriazed with the tool.
+
+  conda create -n demo_ep python=3.8
+  conda activate demo_ep
+  pip install funcx-endpoint
+  funcx-endpoint configure funcx_endpoint_non_compute
+  funcx-endpoint configure funcx_endpoint_compute
+
+At this point you should have 2 folders created at `~/.funcx`, one for each endpoint.
+We need to configure each of this endpoints for a particular functions. A list of example configurations can be found [here](funcx_ep_list).
+
+  funcx-endpoint start funcx_endpoint_compute
+  funcx-endpoint start funcx_endpoint_non_compute
+
+  funcx-endpoint list 
+
+should give you the uuid of this endpoints and those will be necessary for the clients.
+
+
+
 ## Running the client
 
 * Initial auth
@@ -44,3 +67,4 @@ For processing, we will define two endpoints, one to execute "cheap" operations 
 ## Creating the client
 
 * Initial data flow
+
