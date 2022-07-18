@@ -37,6 +37,19 @@ conda install -c conda-forge tike
 pip install -e . 
 ```
 
+The next step is to configure our funcx endpoints to start the correct processing environment.
+on `~/.funcx/funcx_endpoint_non_compute/config.py` you need to add the variable `worker_init` to your provider.
+In my case it looks like this:
+```
+provider=LocalProvider(
+  worker_init='conda activate gladier_demo_remote',                                  init_blocks=1,                                                                      min_blocks=0,                                                                       max_blocks=1,                                                                   ),  
+```
+
+Several configuration examples can be found at the [funcx endpoints documentation](https://funcx.readthedocs.io/en/latest/endpoints.html).
+
+And same for the compute endpoint. 
+Restart your endpoints to get the new configuration.
+
 ## Installing the local environment
 
 ```bash
@@ -48,8 +61,5 @@ mkdir gladier_demo
 cd gladier_demo
 
 #XPCS client
-git clone https://github.com/globus-gladier/gladier-xpcs
-
-#Ptycho tools
-git clone https://github.com/globus-gladier/gladier-ptycho
+git clone https://github.com/globus-gladier/gladier-client-template
 ```
