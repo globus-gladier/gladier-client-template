@@ -1,5 +1,15 @@
 # Gladier Client Examples
 
+
+
+“For application experience, the five use cases does cover the broad spectrum of scenario, but it feels like the “flow” and bigger pictures were lost in translation. 
+I suggest provide details on one of application use case with more cohesive step-by-step flow/actions, maybe in a table: 
+- what does experiment scientists need to facilitate? 
+- what does HPC facility need to deploy and provide interface with? 
+- what does experimental facility/instrument needs to deploy or interface? 
+- Which “discrete” steps can be automated by Gladier? 
+- which can’t and require customization or manual intervention?”
+
 Our paper presents 5 clients
 
 * [XPCS]()

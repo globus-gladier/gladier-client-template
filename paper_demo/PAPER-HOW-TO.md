@@ -1,29 +1,29 @@
 # Infrastructure for Automation
 
-The basic infrastructure needs to be set for three different data sites. The _local_ where the data starts, the _remote_ where data will be transfered and processed and the _portal_ where the results will be served to the portal.
+Our paper presents 5 clients [XPCS](), [SSX](), [HEDM](), [BRAGGNN]() and [PTYCHO]() to show the execution of scientific flows by automating the data processing.
 
-Note that we do not define where the flow will be triggered. This is due the fact that once a flow is defined, it can be executed from "anywhere" and it will invoke the actions on the specified endpoints.
+Although each has its own particular set of tools, much of the initial infrastructure is shared, leaving for the user just the domain specific parts to be adressed and customized. The initial configuration step (which may already be setup at some facilities) is to define the data endpoints. For our flows, we had three "main" endpoints. The _local_ where the data starts, the _remote_ where data will be transfered and processed and the _portal_ where the results will be served to the portal.
 
-For the sake of simplicity we will use the _local_ computer as both execution and initial data endpoint. 
+Note that we do not define where the flow will be triggered. This is due the fact that once a flow is defined, it can be executed from "anywhere" and it will invoke the actions on the specified endpoints. For the sake of simplicity we will use the _local_ computer as both execution and initial data endpoint.
 
-For data, three endpoints need to be defined:
-* local data endpoint
-* remote data endpoint
-* portal data endpoint
-
-For processing, we will define two endpoints, one to execute "cheap" operations on the head node of our facility and one that executes "expensive" operations and require the use of a queue.
+Processing is done by creating a funcX endpoint at the compute facility. In order to optimize flow execution, we will define two endpoints, one to execute "cheap" operations on the head node of our facility and one that executes "expensive" operations and require the use of a queue. The user can point both into the same endpoint if there are no queue policy.
 
 * funcx_endpoint_non_compute
 * funcx_endpoint_compute
 
+We will describe the basic installation of this endpoints and where they are integrated in a _flow_ definition.
+
 ## Local PC
 
-* Install globus services?
-
+Starting by the local resource. We need to make sure that there is a data endpoint, Globus Connect Personal or Globus Connect Server.
 * Globus Connect 
   * Install GCP (if not installed) 
   * Check GCP UUID
   * Check paths
+
+And we need to make sure that the gladier libraries are correctly installed.
+
+* Install Gladier
 
 ## Remote PC
 
