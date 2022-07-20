@@ -22,9 +22,46 @@ Although each has its own particular set of tools, much of the infrastructure is
 
 ## Test Data
 
-Some public datasets can be found at this [globus endpoint](https://app.globus.org/file-manager?origin_id=a17d7fac-ce06-4ede-8318-ad8dc98edd69&origin_path=%2F~%2F).
+By default, test data is pulled from [globus endpoint](https://app.globus.org/file-manager?origin_id=a17d7fac-ce06-4ede-8318-ad8dc98edd69&origin_path=%2F~%2F). Data is available for
+XPCS, SSX, and ptychography.
 
-a17d7fac-ce06-4ede-8318-ad8dc98edd69
+## Gladier Setup
+
+Gladier is used for registering FuncX functions and deploying flows. Below are steps to
+setup funcx-endpoints and a Globus Collection. After this, running the test client below
+will be possible. The test client, unlike the scientific tools, requires no additional external dependencies.
+
+```bash
+
+# Install the necessary components
+conda create -n gladier_demo_remote python=3.9
+conda activate gladier_demo_remote
+pip install gladier funcx-endpoint
+
+# Setup your FuncX "login" endpoint
+# Use the generated UUID for "funcx_endpoint_non_compute" states
+funcx-endpoint configure login
+funcx-endpoint start login
+
+# Setup your FuncX "compute" endpoint
+# Use the generated UUID for "funcx_endpoint_compute" states
+funcx-endpoint configure compute
+funcx-endpoint start compute
+```
+
+You will need to edit the test_client.py script to include your
+FuncX endpoints, along with a Globus Collection. Note: Your
+FuncX endpoints _must_ have access to the Globus Collection you use.
+
+
+Test your basic setup by running the test_client.py:
+
+```bash
+
+python test_client.py
+```
+
+If the run is successful, you are ready to try one of the other experiments.
 
 ## Installing the processing environment
 
