@@ -84,9 +84,22 @@ Test your basic setup by running the test_client.py:
 python test_client.py
 ```
 
-Running the test client will prompt you to login and will direct you to the running flow in the Globus Web app.
+Running the test client will prompt you to login and will direct you to the running flow in the Globus Web app. Ensure you see output similar to the following:
 
-If the run is successful, you are ready to try one of the other experiments.
+```
+python test_client.py
+Run started, you can also track the progress at:
+https://app.globus.org/runs/1742ee41-3e14-4e5e-a191-149857f2ccea
+[ACTIVE]: The Flow is starting execution
+[ACTIVE]: State TransferFromStorage of type Action started
+...
+[ACTIVE]: State ShellCmd of type Action started
+...
+The flow completed with the status: SUCCEEDED
+Output: [0, 'Success! You environment has been setup correctly!\n', '']
+```
+
+Now you're ready to run the other science flows
 
 ## Installing the processing environment
 
