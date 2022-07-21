@@ -12,7 +12,6 @@ from gladier import GladierBaseClient, generate_flow_definition
 
 ##Import individual functions
 from tools.xpcs_pre_publish import PrePublish
-from tools.xpcs_acquire_nodes import AcquireNodes
 from tools.xpcs_boost_corr import BoostCorr
 from tools.xpcs_plot import MakeCorrPlots
 from tools.xpcs_gather_metadata import GatherXPCSMetadata
@@ -26,12 +25,8 @@ class XPCSBoost(GladierBaseClient):
     globus_group = '368beb47-c9c5-11e9-b455-0efb3ba9a670'
     gladier_tools = [
         "gladier_tools.globus.transfer.Transfer:FromStorage",
-#        PrePublish,
-        AcquireNodes,
         BoostCorr,
         MakeCorrPlots,
-#        GatherXPCSMetadata,
-#        Publish,
     ]
 
 def arg_parse():
@@ -80,9 +75,8 @@ if __name__ == '__main__':
             "from_storage_transfer_source_endpoint_id": "a17d7fac-ce06-4ede-8318-ad8dc98edd69", 
             "from_storage_transfer_source_path": "/XPCS/A001_Aerogel_1mm_att6_Lq0_001_0001-1000/",
             
-            # LOCAL LAPTOP FOR DEMO
-            ## TO DO: Add your own GCP UUID.
-            "from_storage_transfer_destination_endpoint_id": "6d3275c0-e5d3-11ec-9bd1-2d2219dcc1fa", 
+            # TODO: Uncomment and add your Globus Collection here
+            # "from_storage_transfer_destination_endpoint_id": "", 
             "from_storage_transfer_destination_path": str(data_dir),
             "from_storage_transfer_recursive": True,
 
@@ -90,9 +84,9 @@ if __name__ == '__main__':
             'hdf_file': output_hdf_file,
             'execution_metadata_file': execution_metadata_file,
 
-            # funcX endpoints
-            "funcx_endpoint_non_compute": "0ad11dc6-db91-42ce-ab1d-032cdc414582",
-            "funcx_endpoint_compute": "1666324d-163f-4f1f-a374-5038824f9810",
+            # TODO: Uncomment and add your funcX endpoints here
+            # "funcx_endpoint_non_compute": "",
+            # "funcx_endpoint_compute": "",
 
             'boost_corr': {
                     'atype': 'TwoTime',
@@ -110,20 +104,11 @@ if __name__ == '__main__':
                     "stride_frame": 1,
                     "overwrite": True,
             },
-
-            'pilot': {
-                # This is the directory which will be published
-                'dataset': dataset_dir,
-                'index': '2e72452f-e932-4da0-b43c-1c722716896e',
-                'project': 'xpcs-8id',
-                # 'source_globus_endpoint': depl_input['input']['globus_endpoint_proc'],
-                'groups': [],
-            },
-
         }
     }
 
     corr_flow = XPCSBoost()
-    flow_run = corr_flow.run_flow(flow_input=flow_input, label=run_label, tags=['gladier','demo', 'xpcs'])
+    run = corr_flow.run_flow(flow_input=flow_input, label=run_label, tags=['gladier','demo', 'xpcs'])
 
-    print('run_id : ' + flow_run['action_id'])
+    print(f"Run started, you can also track the progress at: \n"
+          f"https://app.globus.org/runs/{run['run_id']}")

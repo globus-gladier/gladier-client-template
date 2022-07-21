@@ -1,45 +1,30 @@
 # Infrastructure for Automation
 
-Our paper presents 5 clients [XPCS](), [SSX](), [HEDM](), [BRAGGNN]() and [PTYCHO]() to show the execution of scientific flows by automating the data processing.
+Our paper presents 5 clients [XPCS](), [SSX](), [HEDM](), [BRAGGNN]() and [PTYCHO]() to show the execution of scientific flows and automation of data processing.
 
-Although each has its own particular set of tools, much of the initial infrastructure is shared, leaving for the user just the domain specific parts to be adressed and customized. The initial configuration step (which may already be setup at some facilities) is to define the data endpoints. For our flows, we had three "main" endpoints. The _local_ where the data starts, the _remote_ where data will be transfered and processed and the _portal_ where the results will be served to the portal.
+Although each has its own particular set of tools, many share common patterns and infrastructure, allowing users to focus on customizing the domain specific parts. The initial configuration step (which may already be setup at some facilities) is to define the data endpoints. For our flows, we had three primary data location. _Local_ where the data starts, _remote_ where data will be transfered and processed, and _portal_ where the results will be served to facilitate visualization in a data portal.
 
-Note that we do not define where the flow will be triggered. This is due the fact that once a flow is defined, it can be executed from "anywhere" and it will invoke the actions on the specified endpoints. For the sake of simplicity we will use the _local_ computer as both execution and initial data endpoint.
+Note that we do not define where the flow will be triggered. This is due the fact that once a flow is defined, it can be executed from anywhere and will invoke actions across the specified endpoints. For the sake of simplicity, here we use the _local_ computer as both execution and initial data endpoint.
 
-Processing is done by creating a funcX endpoint at the compute facility. In order to optimize flow execution, we will define two endpoints, one to execute "cheap" operations on the head node of our facility and one that executes "expensive" operations and require the use of a queue. The user can point both into the same endpoint if there are no queue policy.
+Processing is achieved using a funcX endpoint. In order to optimize flow execution, we define two endpoints: one (where workers have network access) to execute organizational operations on login node of our facility and another that executes computationally expensive operations using HPC resources. Here, one can simply use a trivial endpoint for both tasks as the examples are not computationally expensive.
 
-* funcx_endpoint_non_compute
-* funcx_endpoint_compute
+* funcx_endpoint_non_compute - to perform simple tasks
+* funcx_endpoint_compute - to interface with HPC resources
 
-We will describe the basic installation of this endpoints and where they are integrated in a _flow_ definition.
+We describe the basic installation of these endpoints and where they are integrated in a _flow_ definition.
 
-## Local PC
+## Configuration
 
-Starting by the local resource. We need to make sure that there is a data endpoint, Globus Connect Personal or Globus Connect Server.
+Configuring your environment: We need a local Globus endpoint to move example datasets. This can be deployed yourself, or use an existing Globus Connect Personal or Globus Connect Server endpoint.
 * Globus Connect 
   * Install GCP (if not installed) 
   * Check GCP UUID
   * Check paths
 
-And we need to make sure that the gladier libraries are correctly installed.
-
-* Install Gladier
-
-## Remote PC
-
-* Check GCP endpoint
-  * Install GCP (if not installed)
-* Check local path
-
-* Install FuncX endpoints
-  * Configure funcx endpoints
-
-* Install required packages for computation
-
 ### Installing and Configuring your funcX endpoint
 
 We recommend following the [funcX tutorial](https://funcx.readthedocs.io/en/latest/Tutorial.html
-) to get familiriazed with the tool.
+) to get familiriazed with the funcX platform. Here we install funcx-endpoint and start an endpoint to perform tasks.
 
   conda create -n demo_ep python=3.8
   conda activate demo_ep
@@ -56,7 +41,6 @@ We need to configure each of this endpoints for a particular functions. A list o
   funcx-endpoint list 
 
 should give you the uuid of this endpoints and those will be necessary for the clients.
-
 
 
 ## Running the client

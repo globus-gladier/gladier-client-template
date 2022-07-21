@@ -21,7 +21,7 @@ if __name__ == "__main__":
             "from_storage_transfer_source_endpoint_id": "a17d7fac-ce06-4ede-8318-ad8dc98edd69", 
             "from_storage_transfer_source_path": "/PTYCHO/fly001",
             
-            # Add your Globus Collection here
+            # TODO: Uncomment and add your Globus Collection here
             # "from_storage_transfer_destination_endpoint_id": "", 
             "from_storage_transfer_destination_path": destination_path,
             "from_storage_transfer_recursive": True,
@@ -30,8 +30,8 @@ if __name__ == "__main__":
             "args": f"ls {destination_path} > /dev/null && echo 'Execution Test Successful!'",
             "capture_output": True,
             
-            # Add your FuncX endpoint here.
-            "funcx_endpoint_compute": "",
+            # TODO: Uncomment and add your FuncX endpoint here.
+            # "funcx_endpoint_compute": "",
         }
     }
 
