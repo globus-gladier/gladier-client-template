@@ -22,7 +22,7 @@ if __name__ == "__main__":
             "from_storage_transfer_source_path": "/PTYCHO/fly001",
             
             # Add your Globus Collection here
-            # "from_storage_transfer_destination_endpoint_id": "", 
+            "from_storage_transfer_destination_endpoint_id": "", 
             "from_storage_transfer_destination_path": destination_path,
             "from_storage_transfer_recursive": True,
 

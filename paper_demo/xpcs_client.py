@@ -26,12 +26,8 @@ class XPCSBoost(GladierBaseClient):
     globus_group = '368beb47-c9c5-11e9-b455-0efb3ba9a670'
     gladier_tools = [
         "gladier_tools.globus.transfer.Transfer:FromStorage",
-#        PrePublish,
-        AcquireNodes,
         BoostCorr,
         MakeCorrPlots,
-#        GatherXPCSMetadata,
-#        Publish,
     ]
 
 def arg_parse():
@@ -91,8 +87,8 @@ if __name__ == '__main__':
             'execution_metadata_file': execution_metadata_file,
 
             # funcX endpoints
-            "funcx_endpoint_non_compute": "0ad11dc6-db91-42ce-ab1d-032cdc414582",
-            "funcx_endpoint_compute": "1666324d-163f-4f1f-a374-5038824f9810",
+            "funcx_endpoint_non_compute": "",
+            "funcx_endpoint_compute": "",
 
             'boost_corr': {
                     'atype': 'TwoTime',
@@ -110,16 +106,6 @@ if __name__ == '__main__':
                     "stride_frame": 1,
                     "overwrite": True,
             },
-
-            'pilot': {
-                # This is the directory which will be published
-                'dataset': dataset_dir,
-                'index': '2e72452f-e932-4da0-b43c-1c722716896e',
-                'project': 'xpcs-8id',
-                # 'source_globus_endpoint': depl_input['input']['globus_endpoint_proc'],
-                'groups': [],
-            },
-
         }
     }
 

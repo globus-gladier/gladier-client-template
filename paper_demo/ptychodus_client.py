@@ -23,7 +23,6 @@ class PtychodusFlow(GladierBaseClient):
         "gladier_tools.globus.transfer.Transfer:FromStorage",
         "gladier_tools.posix.shell_cmd.ShellCmdTool",
         PtychodusPlot,
-        "gladier_tools.publish.Publish",
     ]
 
 
@@ -67,15 +66,8 @@ if __name__ == "__main__":
             "timeout": 180,
             
             # funcX endpoints
-            "funcx_endpoint_non_compute": "0ad11dc6-db91-42ce-ab1d-032cdc414582",
-            "funcx_endpoint_compute": "1666324d-163f-4f1f-a374-5038824f9810",
-            
-            "upload_dir": f"/eagle/APSDataAnalysis/PTYCHO/{data_dir}",  # relative to funcx
-            "search_index": "93e343cc-b555-4d60-9aab-80ff191a8abb",
-            "search_project": "ptychography",
-            "source_globus_endpoint": "08925f04-569f-11e7-bef8-22000b9a448b",
-            "groups": [],
-            "pilot": {},  # this seem to be a bug on the autogeneration
+            "funcx_endpoint_non_compute": "",
+            "funcx_endpoint_compute": "",
         }
     }
 

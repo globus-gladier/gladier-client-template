@@ -1,15 +1,5 @@
 # Gladier Client Examples
 
-
-
-“For application experience, the five use cases does cover the broad spectrum of scenario, but it feels like the “flow” and bigger pictures were lost in translation. 
-I suggest provide details on one of application use case with more cohesive step-by-step flow/actions, maybe in a table: 
-- what does experiment scientists need to facilitate? 
-- what does HPC facility need to deploy and provide interface with? 
-- what does experimental facility/instrument needs to deploy or interface? 
-- Which “discrete” steps can be automated by Gladier? 
-- which can’t and require customization or manual intervention?”
-
 Our paper presents 5 clients
 
 * [XPCS]()
@@ -18,7 +8,7 @@ Our paper presents 5 clients
 * [BRAGGNN]()
 * [PTYCHOGRAPHY]()
 
-Although each has its own particular set of tools, much of the infrastructure is shared and can be installed follow the PAPER-HOW-TO.md manual.
+Although each has its own particular set of tools, they share common patterns and leverage the same services. Initial setup can be installed follow the PAPER-HOW-TO.md manual.
 
 ## Test Data
 
@@ -27,8 +17,8 @@ XPCS, SSX, and ptychography.
 
 ## Gladier Setup
 
-Gladier is used for registering FuncX functions and deploying flows. Below are steps to
-setup funcx-endpoints and a Globus Collection. After this, running the test client below
+Gladier is used to register FuncX functions and deploy flows. Below are the steps to
+setup funcX endpoints. After this, running the test client below
 will be possible. The test client, unlike the scientific tools, requires no additional external dependencies.
 
 ```bash
@@ -38,12 +28,12 @@ conda create -n gladier_demo_remote python=3.9
 conda activate gladier_demo_remote
 pip install gladier funcx-endpoint
 
-# Setup your FuncX "login" endpoint
+# Setup your FuncX "login" endpoint - this is used for organization tasks
 # Use the generated UUID for "funcx_endpoint_non_compute" states
 funcx-endpoint configure login
 funcx-endpoint start login
 
-# Setup your FuncX "compute" endpoint
+# Setup your FuncX "compute" endpoint - this is typically used for computationally expensive tasks
 # Use the generated UUID for "funcx_endpoint_compute" states
 funcx-endpoint configure compute
 funcx-endpoint start compute
@@ -61,16 +51,18 @@ Test your basic setup by running the test_client.py:
 python test_client.py
 ```
 
+Running the test client will prompt you to login and will direct you to the running flow in the Globus Web app.
+
 If the run is successful, you are ready to try one of the other experiments.
 
 ## Installing the processing environment
 
+To run flows that perform the various use cases we need to install domain specific tools in the processing conda environment. This will allow
+the flow to execution functions that process the data. 
+
+Note: you can reuse the conda environment previously created. After installation, you will need to restart your funcX endpoint.
+
 ```bash
-conda create -n gladier_demo_remote python=3.8
-conda activate gladier_demo_remote
-
-pip install funcx-endpoint
-
 #XPCS flow
 conda install -c nvidia cudatoolkit
 conda install -c pytorch pytorch
@@ -84,29 +76,33 @@ conda install -c conda-forge tike
 pip install -e . 
 ```
 
-The next step is to configure our funcx endpoints to start the correct processing environment.
-on `~/.funcx/funcx_endpoint_non_compute/config.py` you need to add the variable `worker_init` to your provider.
-In my case it looks like this:
-```
-provider=LocalProvider(
-  worker_init='conda activate gladier_demo_remote',                                  init_blocks=1,                                                                      min_blocks=0,                                                                       max_blocks=1,                                                                   ),  
-```
+You may also want to modify your funcX endpoint configuration to provision compute nodes, if available. 
 
 Several configuration examples can be found at the [funcx endpoints documentation](https://funcx.readthedocs.io/en/latest/endpoints.html).
 
-And same for the compute endpoint. 
-Restart your endpoints to get the new configuration.
+Once installed and configured you will need to restart your funcX endpoints. 
 
-## Installing the local environment
+
+## Running the use cases
+
+You should now be able to run the various use case clients.
+
+### Ptychography flow
+
+The ptychography flow uses a shell command tool to execute the `ptychodus` tool on the example data.
+
+To run the ptychography flow you will need to edit `ptychodus_client.py` to specify your endpoints and data paths.
 
 ```bash
-conda create -n gladier_demo_local python=3.8
-conda activate gladier_demo_local
 
-pip install gladier
-mkdir gladier_demo
-cd gladier_demo
+python ptychodus_client.py --datadir <data path>
+```
 
-#XPCS client
-git clone https://github.com/globus-gladier/gladier-client-template
+### XPCS flow
+
+To run the XPCS flow you will need to edit `xpcs_client.py` to specify your endpoints.
+
+```bash
+
+python xpcs_client.py --datadir <data path>
 ```
