@@ -12,7 +12,6 @@ from gladier import GladierBaseClient, generate_flow_definition
 
 ##Import individual functions
 from tools.xpcs_pre_publish import PrePublish
-from tools.xpcs_acquire_nodes import AcquireNodes
 from tools.xpcs_boost_corr import BoostCorr
 from tools.xpcs_plot import MakeCorrPlots
 from tools.xpcs_gather_metadata import GatherXPCSMetadata
@@ -77,7 +76,7 @@ if __name__ == '__main__':
             "from_storage_transfer_source_path": "/XPCS/A001_Aerogel_1mm_att6_Lq0_001_0001-1000/",
             
             # TODO: Uncomment and add your Globus Collection here
-            # "from_storage_transfer_destination_endpoint_id": "6d3275c0-e5d3-11ec-9bd1-2d2219dcc1fa", 
+            # "from_storage_transfer_destination_endpoint_id": "", 
             "from_storage_transfer_destination_path": str(data_dir),
             "from_storage_transfer_recursive": True,
 
@@ -109,6 +108,7 @@ if __name__ == '__main__':
     }
 
     corr_flow = XPCSBoost()
-    flow_run = corr_flow.run_flow(flow_input=flow_input, label=run_label, tags=['gladier','demo', 'xpcs'])
+    run = corr_flow.run_flow(flow_input=flow_input, label=run_label, tags=['gladier','demo', 'xpcs'])
 
-    print('run_id : ' + flow_run['action_id'])
+    print(f"Run started, you can also track the progress at: \n"
+          f"https://app.globus.org/runs/{run['run_id']}")
