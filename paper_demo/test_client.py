@@ -48,3 +48,5 @@ if __name__ == "__main__":
     status = gladier_test_client.get_status(run["run_id"])
     if status.get("status") == "SUCCEEDED":
         print(status["details"]["output"]["ShellCmd"]["details"]["result"][0])
+    else:
+        print(f"The flow failed! Check the logs for details: https://app.globus.org/runs/{run['run_id']}")
