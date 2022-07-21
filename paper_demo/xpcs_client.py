@@ -76,8 +76,7 @@ if __name__ == '__main__':
             "from_storage_transfer_source_endpoint_id": "a17d7fac-ce06-4ede-8318-ad8dc98edd69", 
             "from_storage_transfer_source_path": "/XPCS/A001_Aerogel_1mm_att6_Lq0_001_0001-1000/",
             
-            # LOCAL LAPTOP FOR DEMO
-            ## TO DO: Add your own GCP UUID.
+            # TODO: Add your Globus Collection here
             "from_storage_transfer_destination_endpoint_id": "6d3275c0-e5d3-11ec-9bd1-2d2219dcc1fa", 
             "from_storage_transfer_destination_path": str(data_dir),
             "from_storage_transfer_recursive": True,
@@ -86,7 +85,7 @@ if __name__ == '__main__':
             'hdf_file': output_hdf_file,
             'execution_metadata_file': execution_metadata_file,
 
-            # funcX endpoints
+            # TODO: Add your funcX endpoints here
             "funcx_endpoint_non_compute": "",
             "funcx_endpoint_compute": "",
 
