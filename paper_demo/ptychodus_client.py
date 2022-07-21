@@ -71,5 +71,7 @@ if __name__ == "__main__":
     }
 
     ptycho_flow = PtychodusFlow()
-    flow_run = ptycho_flow.run_flow(flow_input=flow_input, label=run_label)
-    print("run_id : " + flow_run["action_id"])
+    run = ptycho_flow.run_flow(flow_input=flow_input, label=run_label)
+
+    print(f"Run started, you can also track the progress at: \n"
+          f"https://app.globus.org/runs/{run['run_id']}")
