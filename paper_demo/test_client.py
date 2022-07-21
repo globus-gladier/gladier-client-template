@@ -30,8 +30,8 @@ if __name__ == "__main__":
             "args": f"ls {destination_path} > /dev/null && echo 'Execution Test Successful!'",
             "capture_output": True,
             
-            # TODO: Add your FuncX endpoint here.
-            "funcx_endpoint_compute": "",
+            # TODO: Uncomment and add your FuncX endpoint here.
+            # "funcx_endpoint_compute": "",
         }
     }
 
