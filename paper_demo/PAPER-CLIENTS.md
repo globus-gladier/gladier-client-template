@@ -26,7 +26,7 @@ will be possible. The test client, unlike the scientific tools, requires no addi
 # Install the necessary components
 conda create -n gladier_demo_remote python=3.9
 conda activate gladier_demo_remote
-pip install gladier funcx-endpoint
+pip install gladier gladier-tools funcx-endpoint
 
 # Setup your FuncX "login" endpoint - this is used for organization tasks
 # Use the generated UUID for "funcx_endpoint_non_compute" states
