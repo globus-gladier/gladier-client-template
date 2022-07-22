@@ -3,7 +3,9 @@ from gladier import GladierBaseClient, generate_flow_definition
 @generate_flow_definition
 class GladierTestClient(GladierBaseClient):
     gladier_tools = [
+        # Transfer a file from Tutorial Storage
         "gladier_tools.globus.transfer.Transfer:FromStorage",
+        # Run a shell command on the file
         "gladier_tools.posix.shell_cmd.ShellCmdTool",
     ]
 
@@ -11,7 +13,7 @@ class GladierTestClient(GladierBaseClient):
 if __name__ == "__main__":
 
     # The input data will be copied to this location for processing
-    destination_path = "~/gladier_demo/ptycho/"
+    destination_path = "~/gladier_demo/gladier_test_file.txt"
 
     # Base input for the flow
     flow_input = {
@@ -19,15 +21,15 @@ if __name__ == "__main__":
 
             # The Test data sourced from a public location. 
             "from_storage_transfer_source_endpoint_id": "a17d7fac-ce06-4ede-8318-ad8dc98edd69", 
-            "from_storage_transfer_source_path": "/PTYCHO/fly001",
+            "from_storage_transfer_source_path": "/TEST/gladier_test_file.txt",
             
             # TODO: Uncomment and add your Globus Collection here
             # "from_storage_transfer_destination_endpoint_id": "", 
             "from_storage_transfer_destination_path": destination_path,
-            "from_storage_transfer_recursive": True,
+            "from_storage_transfer_recursive": False,
 
-            # shell cmd inputs
-            "args": f"ls {destination_path} > /dev/null && echo 'Execution Test Successful!'",
+            # shell cmd inputs. Run the 'cat' command on the file
+            "args": f"cat {destination_path}",
             "capture_output": True,
             
             # TODO: Uncomment and add your FuncX endpoint here.
@@ -46,7 +48,8 @@ if __name__ == "__main__":
 
     # Report the result
     status = gladier_test_client.get_status(run["run_id"])
+    print(f"The flow completed with the status: {status.get('status')}")
     if status.get("status") == "SUCCEEDED":
-        print(status["details"]["output"]["ShellCmd"]["details"]["result"][0])
+        print(f"Output: {status['details']['output']['ShellCmd']['details']['result'][0]}")
     else:
-        print(f"The flow failed! Check the logs for details: https://app.globus.org/runs/{run['run_id']}")
+        print(f"Check the logs for details: https://app.globus.org/runs/{run['run_id']}")
