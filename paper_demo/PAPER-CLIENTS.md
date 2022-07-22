@@ -59,6 +59,10 @@ funcx-endpoint list
 +----------------+--------------+--------------------------------------+
 ```
 
+### FuncX on HPC systems
+
+In an HPC environment, you may also want to modify your funcX endpoint configuration to provision compute nodes. Several configuration examples can be found at the [funcx endpoints documentation](https://funcx.readthedocs.io/en/latest/endpoints.html).
+
 ## Gladier Setup
 
 Gladier is used for registering FuncX functions and deploying flows. Below are steps to
@@ -99,21 +103,21 @@ The flow completed with the status: SUCCEEDED
 Output: [0, 'Success! You environment has been setup correctly!\n', '']
 ```
 
-Now you're ready to run the other science flows
+Now you're ready to run the other science flows.
 
-## Installing the processing environment
+## Ptychography
 
-To run flows that perform the various use cases we need to install domain specific tools in the processing conda environment. This will allow
-the flow to execution functions that process the data. 
+The ptychography flow uses a shell command tool to execute the `ptychodus` tool on the example data.
 
-Note: you can reuse the conda environment previously created. After installation, you will need to restart your funcX endpoint.
+Refer to the python environment used for your FuncX Endpoint above:
 
-```bash
-#XPCS flow
-conda install -c nvidia cudatoolkit
-conda install -c pytorch pytorch
-pip install -e git+https://github.com/AZjk/boost_corr#egg=boost_corr
+```
+| compute        | Running      | abcdefgh-0454-4af1-97ec-012771c869f9 |
+```
 
+Your compute endpoint will require the following dependencies:
+
+```
 #Ptycho tools
 git clone https://github.com/AdvancedPhotonSource/ptychodus
 cd ptychodus
@@ -122,31 +126,28 @@ conda install -c conda-forge tike
 pip install -e . 
 ```
 
-You may also want to modify your funcX endpoint configuration to provision compute nodes, if available. 
-
-Several configuration examples can be found at the [funcx endpoints documentation](https://funcx.readthedocs.io/en/latest/endpoints.html).
-
-Once installed and configured you will need to restart your funcX endpoints. 
-
-
-## Running the use cases
-
-You should now be able to run the various use case clients.
-
-### Ptychography flow
-
-The ptychography flow uses a shell command tool to execute the `ptychodus` tool on the example data.
-
-To run the ptychography flow you will need to edit `ptychodus_client.py` to specify your endpoints and data paths.
+Before you run `ptychodus_client.py`, remember to restart your FuncX compute endpoint and set
+the values in the script below.
 
 ```bash
 
 python ptychodus_client.py --datadir <data path>
 ```
 
-### XPCS flow
+## XPCS flow
 
-To run the XPCS flow you will need to edit `xpcs_client.py` to specify your endpoints.
+The XPCS flow uses the boost_corr python sdk for execution, and requires the following dependencies
+for its compute endpoint:
+
+```bash
+#XPCS flow
+conda install -c nvidia cudatoolkit
+conda install -c pytorch pytorch
+pip install -e git+https://github.com/AZjk/boost_corr#egg=boost_corr
+```
+
+
+Remember to restart your compute endpoint and add the values to the `xpcs_client.py` script.
 
 ```bash
 
