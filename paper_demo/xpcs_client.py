@@ -1,28 +1,13 @@
-#!/usr/bin/env python
-
-# Enable Gladier Logging
-# import gladier.tests
-
 import argparse
 import os
-import pathlib
-
 
 from gladier import GladierBaseClient, generate_flow_definition
-
-##Import individual functions
-from tools.xpcs_pre_publish import PrePublish
 from tools.xpcs_boost_corr import BoostCorr
 from tools.xpcs_plot import MakeCorrPlots
-from tools.xpcs_gather_metadata import GatherXPCSMetadata
-from tools.xpcs_publish import Publish
 
 
-@generate_flow_definition(modifiers={
-#    'publish_gather_metadata': {'payload': '$.GatherXpcsMetadata.details.result[0]'}
-})
+@generate_flow_definition
 class XPCSBoost(GladierBaseClient):
-    globus_group = '368beb47-c9c5-11e9-b455-0efb3ba9a670'
     gladier_tools = [
         "gladier_tools.globus.transfer.Transfer:FromStorage",
         BoostCorr,
