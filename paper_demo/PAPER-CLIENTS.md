@@ -1,26 +1,29 @@
-# Gladier Client Examples
+# Gladier Application Examples
 
-Our paper presents 5 clients
+The paper **Linking Scientific Instruments and Computation** describes five example Gladier applications. We provide code pointers and information on how to run each application at the following links:
 
-* [XPCS]()
-* [SSX]()
-* [HEDM]()
-* [BRAGGNN]()
-* [PTYCHOGRAPHY]()
+* [XPCS](https://github.com/globus-gladier/gladier-client-template/blob/main/paper_demo/xpcs_client.py): X-ray Photon Correlation Spectroscopy application.
+* [SSX](): Serial Synchrotron Crystallography application 
+* [HEDM](): High-energy Diffraction Microscopy
+* [BRAGGNN](): Bragg
+* [PTYCHOGRAPHY](): Ptychography application.
 
-Although each has its own particular set of tools, they share common patterns and leverage the same services. Initial setup can be installed follow the PAPER-HOW-TO.md manual.
+We also provide below information on how to set up to run these applications 
+
+Although each application has its own particular set of tools, they all share common patterns and leverage the same services. Initial setup can be installed follow the PAPER-HOW-TO.md manual.
 
 ## Test Data
 
-By default, test data is pulled from [globus endpoint](https://app.globus.org/file-manager?origin_id=a17d7fac-ce06-4ede-8318-ad8dc98edd69&origin_path=%2F~%2F). Data is available for
-XPCS, SSX, and ptychography.
+To facilitate experimentation, we make test data available for the XPCS, SSX, and Ptychography applications at this [Globus endpoint](https://app.globus.org/file-manager?origin_id=a17d7fac-ce06-4ede-8318-ad8dc98edd69&origin_path=%2F~%2F).
 
 ## FuncX Endpoint Setup
 
-For these examples, A "compute" machine is needed to stand in as the HPC environment, where data will be transfered and processed. It does not need to be powerful, but we do recommend linux (preferably Ubuntu)
+The five applications each run their computational steps on a high-performance computing system. 
+
+For these examples, A "compute" machine is needed to stand in as the HPC environment, where data will be transfered and processed. It does not need to be powerful, but we do recommend Linux (preferably Ubuntu)
 and Conda (for python). A Globus collection is also required (Globus Connect Personal is recommended)
 
-**Note**: There are current issues using macs as FuncX Endpoints. We highly recommend using Linux instead.
+**Note**: There are current issues using Macs as FuncX Endpoints. We highly recommend using Linux instead.
 
 ```bash
 
@@ -29,23 +32,23 @@ conda create -n gladier_demo_remote python=3.9
 conda activate gladier_demo_remote
 pip install funcx-endpoint
 
-# Setup your FuncX "login" endpoint - this is used for organization tasks
+# Set up your FuncX "login" endpoint - this is used for organization tasks
 # Use the generated UUID for "funcx_endpoint_non_compute" states
 funcx-endpoint configure login
 funcx-endpoint start login
 
-# Setup your FuncX "compute" endpoint - this is typically used for computationally expensive tasks
+# Set up your FuncX "compute" endpoint - this is typically used for computationally expensive tasks
 # Use the generated UUID for "funcx_endpoint_compute" states
 funcx-endpoint configure compute
 funcx-endpoint start compute
 ```
 
-The two FuncX Endpoints `funcx_endpoint_compute` and `funcx_endpoint_non_compute` simulate an HPC environment. "Compute" endpoints are not required to have internet access, but must be able to
-handle large CPU loads. `funcx_endpoint_non_compute` (login/head nodes) are not required to handle
-large CPU loads, but they do require internet access. For these examples, you are welcome to use
-one FuncX endpoint for both if it satisfies both constraints.
+The two FuncX Endpoints `funcx_endpoint_compute` and `funcx_endpoint_non_compute` simulate an HPC environment:
+* The "Compute" endpoints do not require Internet access, but must be able to handle large CPU loads. 
+* The `funcx_endpoint_non_compute` (login/head nodes) are not required to handle large CPU loads, but they do require Internet access. 
+For these examples, you are welcome to use the same FuncX endpoint for both if it satisfies both constraints.
 
-Ensure you have both a Globus Collection UUID, and your FuncX Endpoint(s) setup:
+Ensure you have a Globus Collection UUID and that your FuncX Endpoint(s) setup:
 
 ```
 funcx-endpoint list
@@ -66,15 +69,14 @@ In an HPC environment, you may also want to modify your funcX endpoint configura
 ## Gladier Setup
 
 Gladier is used for registering FuncX functions and deploying flows. Below are steps to
-setup funcx-endpoints and a Globus Collection. After this, running the test client below
+set up funcX endpoints and a Globus Collection. After this, running the test client below
 will be possible. The test client, unlike the scientific tools, requires no additional external dependencies.
 
-
-You will need to edit the test_client.py script to include your
+You will need to edit the `test_client.py` script to include your
 FuncX endpoints, along with a Globus Collection. Note: Your
-FuncX endpoints _must_ have access to the Globus Collection you use.
+FuncX endpoints _must_ have access to the Globus Collection that you use.
 
-You may install these in a separate python environment or a separate machine
+You may install these in a separate Python environment or on a separate machine
 if you wish:
 
 ```
@@ -88,7 +90,7 @@ Test your basic setup by running the test_client.py:
 python test_client.py
 ```
 
-Running the test client will prompt you to login and will direct you to the running flow in the Globus Web app. Ensure you see output similar to the following:
+Running the test client will prompt you to login and will direct you to the running flow in the Globus Web app. Ensure that you see output similar to the following:
 
 ```
 python test_client.py
