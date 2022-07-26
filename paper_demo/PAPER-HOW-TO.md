@@ -1,12 +1,12 @@
 # Infrastructure for Automation
 
-Our paper presents 5 clients [XPCS](), [SSX](), [HEDM](), [BRAGGNN]() and [PTYCHO]() to show the execution of scientific flows and automation of data processing.
+Our paper presents five clients [XPCS](), [SSX](), [HEDM](), [BRAGGNN]() and [PTYCHO]() to show the execution of scientific flows and automation of data processing.
 
 Although each has its own particular set of tools, many share common patterns and infrastructure, allowing users to focus on customizing the domain specific parts. The initial configuration step (which may already be setup at some facilities) is to define the data endpoints. For our flows, we had three primary data location. _Local_ where the data starts, _remote_ where data will be transfered and processed, and _portal_ where the results will be served to facilitate visualization in a data portal.
 
 Note that we do not define where the flow will be triggered. This is due the fact that once a flow is defined, it can be executed from anywhere and will invoke actions across the specified endpoints. For the sake of simplicity, here we use the _local_ computer as both execution and initial data endpoint.
 
-Processing is achieved using a funcX endpoint. In order to optimize flow execution, we define two endpoints: one (where workers have network access) to execute organizational operations on login node of our facility and another that executes computationally expensive operations using HPC resources. Here, one can simply use a trivial endpoint for both tasks as the examples are not computationally expensive.
+Processing is achieved by using a funcX endpoint. In order to optimize flow execution, we define two endpoints: one (where workers have network access) to execute organizational operations on login node of our facility and another that executes computationally expensive operations using HPC resources. Here, one can simply use a trivial endpoint for both tasks as the examples are not computationally expensive.
 
 * funcx_endpoint_non_compute - to perform simple tasks
 * funcx_endpoint_compute - to interface with HPC resources
