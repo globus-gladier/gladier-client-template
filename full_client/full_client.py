@@ -8,7 +8,7 @@ from pprint import pprint
 from gladier import GladierBaseClient, generate_flow_definition
 
 ##Import tools that will be used on the flow definition
-from tools.simple_funcx_tool import SimpleTool
+from tools.simple_compute_tool import SimpleTool
 from tools.gather_metadata import GatherMetadata
 
 from gladier_tools.globus.transfer import Transfer
@@ -54,9 +54,8 @@ def run_flow(event):
             'name': args.name, 
             'wfile' : '/test/test.txt',
 
-            # funcX tutorial endpoint
-            'funcx_endpoint_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
-            'funcx_endpoint_non_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
+            # Globus Compute tutorial endpoint
+            'compute_endpoint': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
 
             'pilot':{}
         }

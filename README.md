@@ -1,6 +1,6 @@
 # gladier-client-template
 
-This is a step-by-step guide to creating a fully automated experiment with the use of [Globus](https://www.globus.org) tools via the [Gladier](https://github.com/globus-gladier/gladier) automation library. Full documentation can be found at [Gladier Read the Docs](https://gladier.readthedocs.io/); see also [FuncX](https://www.funcx.org) for information about the remote execution mechanisms used in our automation. 
+This is a step-by-step guide to creating a fully automated experiment with the use of [Globus](https://www.globus.org) tools via the [Gladier](https://github.com/globus-gladier/gladier) automation library. Full documentation can be found at [Gladier Read the Docs](https://gladier.readthedocs.io/); see also [Globus-Compute](https://globus-compute.readthedocs.io/) for information about the remote execution mechanisms used in our automation.
 
 ## Your Journey starts here ...
 ### If you choose to accept the challenge.
@@ -36,23 +36,23 @@ Our first example, **Process** (`simple_clients/example_client_process.py`) defi
 
    ./simple_clients/example_client_process.py
 
-In order to execute a remote function (the equivalent of a `lambda`) we use the funcX service to register, retrieve, and execute functions. The service requires that a small instance client be deployed at the "processing" machine. We have a client running on one of our example machines. The location of this client is defined by:
+In order to execute a remote function (the equivalent of a `lambda`) we use the Globus-Compute service to register, retrieve, and execute functions. The service requires that a small instance client be deployed at the "processing" machine. We have a client running on one of our example machines. The location of this client is defined by:
 
-    'funcx_endpoint_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df'
+    'compute_endpoint': '4b116d3c-1703-4f8f-9f6f-39921e5864df'
 
-> Running the **Funcx Client** on a computer gives a flow the ability to `send` functions to be executed on that computer. (This computer may be a remote cluster of cloud, or alternatively the computer on which the flow client executes: funcX runs the same in each case.) As we explore later, different parts of the flow can be executed on different computers by providing different `funcx_endpoint_compute` value for each part.
+> Running the **Globus Compute Client** on a computer gives a flow the ability to `send` functions to be executed on that computer. (This computer may be a remote cluster of cloud, or alternatively the computer on which the flow client executes: Globus Compute runs the same in each case.) As we explore later, different parts of the flow can be executed on different computers by providing different `compute_endpoint` value for each part.
 
-The **Process** flow runs the function defined by `tools/simple_funcx_tool.py` and imported into the client as `SimpleTool`. Gladier automatically checks for updates on the function definition and registers or re-registers (if the local function definition has changed) with the funcx service. The UUID of this function is automatically populated in the flow definition. 
+The **Process** flow runs the function defined by `tools/simple_compute_tool.py` and imported into the client as `SimpleTool`. Gladier automatically checks for updates on the function definition and registers or re-registers (if the local function definition has changed) with the Globus Compute service. The UUID of this function is automatically populated in the flow definition. 
 
-Before the execution the `input` variables need to be defined to contain **all** information necessary for the flow. In our case, that information includes two input parameters expected by `SimpleTool` (`name` and `wfile`) and the location of the computer where the function is to execute, `funcx_endpoint_compute`.
+Before the execution the `input` variables need to be defined to contain **all** information necessary for the flow. In our case, that information includes two input parameters expected by `SimpleTool` (`name` and `wfile`) and the location of the computer where the function is to execute, `compute_endpoint`.
 
     flow_input = {
         'input': {
             'name': args.name, 
             'wfile' : '/test/test.txt',
 
-            # funcX tutorial endpoint
-            'funcx_endpoint_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
+            # Globus Compute tutorial endpoint
+            'compute_endpoint': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
         }
     }
 
@@ -70,7 +70,7 @@ Running the client again will not register a new flow with the globus service bu
 
 * We suggest keeping the client `def` outsite of the `__main__` function of the python file. Then creating an instance at `__main__` and using `.run()`.
 * Each tool in the flow have separate `required_inputs` that need to be included in the initial payload. 
-* The `SimpleTool` and its driving function `simple_funcx_function` are separated into a `tools` folder in a single file. We advise to create one python file per "action" in the flows. This makes development and debugging and tracing errors much simpler.
+* The `SimpleTool` and its driving function `simple_compute_function` are separated into a `tools` folder in a single file. We advise to create one python file per "action" in the flows. This makes development and debugging and tracing errors much simpler.
 * The `example_client.py` itself also is separated from the other clients in the folder and only contain one `GladierBaseClient`. This prevents instances being created with the 'wrong' flow definition or common mistakes on 'what is running'.
 
 
@@ -136,7 +136,7 @@ To check if the data went to the index try this check https://acdc.alcf.anl.gov/
 
 At this point. You have the tools to create 1-step flows. We suggest you play with the examples and create your own python functions. Some ideas:
 
-* Create your own funcx endpoint and try executing functions at your own machine. One simple way to see where is being executed is to create a file at your desktop.
+* Create your own Globus Compute endpoint and try executing functions at your own machine. One simple way to see where is being executed is to create a file at your desktop.
 * Now try transfering this file into our remote server
 * And retrieving the information of this file and adding to your search index.
 * Try downloading the file from the globusApp
@@ -150,25 +150,25 @@ For simplicity, we start a new client in `/full_client` with a new set of `/tool
 The idea is to create the infrastructure based on the simple_examples and expand it into a flow with:
 
 * Transfer
-* Funcx 
-* Funcx 
+* Compute 
+* Compute 
 * Publish
 
 ### Defining the correct payload
 
 As you noticed above, each 1-step flow have different payloads. Now, all the `input` variables need to be defined at once.
 
-> **Best practice** the name of each variable on the payload should match the input name of the variables on the funcx functions. Keeping then separate and well commented on the client makes debugging much faster for you and others.
+> **Best practice** the name of each variable on the payload should match the input name of the variables on the Globus Compute functions. Keeping then separate and well commented on the client makes debugging much faster for you and others.
 
 ### Using flow modifiers
 
 Auto creating the flow definitions is great but sometimes you may want to change variables like "Timeouts" or which endpoint will execute each function
 
-> **Best practice** for machines that require `queieng` we define two endpoints `funcx_endpoint_non_compute` at the head node and `funcx_endpoint_compute` at the queued nodes. Note that since they live in the machine, they share the same `globus_endpoint` and therefore can access the same files. You can use the `non_compute` endpoint for funcx functions which do not require lots of compute power.
+> **Best practice** for machines that require `queieng` we can define two endpoints `compute_endpoint` as the main endpoint and a second `compute_nonqueue_endpoint` for lighter operations. Note that since they live in the machine, they share the same `globus_endpoint` and therefore can access the same files. You can use the `nonqueue` endpoint for compute functions which do not require lots of compute power.
 
 ### Importing external functions
 
-Functions may already been created by you or others. You can importa a `GladierBaseTool` from a different package and include it directly into your flow. Gladier will take care of registering the funcx definition with your username.
+Functions may already been created by you or others. You can importa a `GladierBaseTool` from a different package and include it directly into your flow. Gladier will take care of registering the Globus Compute definition with your username.
 
 > **Tip** [Gladier-Tools](https://www.github.com/globus-gladier/gladier-tools) already have lots of tools for posix, transfer and publish operations. In special, `Publish` is very useful to automatically create and ingest metadata based on your experiment. Lets explore it further below.
 

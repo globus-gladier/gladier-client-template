@@ -38,8 +38,8 @@ if __name__ == '__main__':
     flow_input = {
         'input': {
             'coordinates': coordinates,
-            # funcX tutorial endpoint
-            'funcx_endpoint_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
+            # Globus Compute tutorial endpoint
+            'compute_endpoint': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
         }
     }
 

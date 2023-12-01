@@ -13,9 +13,9 @@ def gather_metadata(wfile = None, text = None, **data):
 
 @generate_flow_definition
 class GatherMetadata(GladierBaseTool):
-    funcx_functions = [gather_metadata]
+    compute_functions = [gather_metadata]
     required_input = [
         'wfile',
         'name', 
-        'funcx_endpoint_compute'
+        'compute_endpoint'
         ]

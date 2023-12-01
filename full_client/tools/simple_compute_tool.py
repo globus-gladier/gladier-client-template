@@ -13,9 +13,9 @@ def simple_function(wfile = None, text = None, **data):
 
 @generate_flow_definition
 class SimpleTool(GladierBaseTool):
-    funcx_functions = [simple_function]
+    compute_functions = [simple_function]
     required_input = [
         'wfile',
         'name', 
-        'funcx_endpoint_compute'
+        'compute_endpoint'
         ]

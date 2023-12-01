@@ -8,10 +8,10 @@ from pprint import pprint
 from gladier import GladierBaseClient, generate_flow_definition
 
 ##Import tools that will be used on the flow definition
-from tools.simple_funcx_tool import SimpleTool
+from tools.simple_compute_tool import SimpleTool
 
 ##Generate flow based on the collection of `gladier_tools` 
-# In this case `SimpleTool` was defined and imported from tools.simple_funcx_tool 
+# In this case `SimpleTool` was defined and imported from tools.simple_compute_tool 
 @generate_flow_definition
 class Example_Client(GladierBaseClient):
     gladier_tools = [
@@ -43,8 +43,8 @@ if __name__ == '__main__':
             'name': args.name, 
             'wfile' : '/test/test.txt',
 
-            # funcX tutorial endpoint
-            'funcx_endpoint_compute': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
+            # Globus Compute tutorial endpoint
+            'compute_endpoint': '4b116d3c-1703-4f8f-9f6f-39921e5864df',
         }
     }
     print('Created payload.')

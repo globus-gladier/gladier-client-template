@@ -6,7 +6,7 @@ echo $full_name
 
 repo=$(echo $full_name | awk -F '/' '{print $2}')
 
-original_repo="gladier-client-template"
+original_repo="wei_workcell_template"
 
 
 echo $repo

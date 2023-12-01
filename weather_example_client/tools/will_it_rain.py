@@ -33,10 +33,10 @@ def will_it_rain(**data):
 
 @generate_flow_definition
 class WillItRain(GladierBaseTool):
-    funcx_functions = [will_it_rain]
+    compute_functions = [will_it_rain]
     required_input = [
         'coordinates',
-        'funcx_endpoint_compute'
+        'compute_endpoint'
         ]
     flow_input = {
         'coordinates': (41.8334,-88.0121)

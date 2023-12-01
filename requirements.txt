@@ -1,4 +1,2 @@
 gladier
 gladier-tools
-funcx
-globus_automate_client
