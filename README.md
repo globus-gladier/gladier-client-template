@@ -5,7 +5,7 @@ This is a step-by-step guide to creating a fully automated experiment with the u
 ## Your Journey starts here ...
 ### If you choose to accept the challenge.
 ------------------------------
-Hello traveler. Welcome to this guide to the _Globus Architecture for Data-Intensive Experimental Research_, in short, GLADIER--a library designed to facilitate the authoring of **flows**, sequences of **actions** (e.g., running a program, transferring data, publishing data) associated with the processing of data from experimental facilities. 
+Hello traveler. Welcome to this guide to the _Globus Architecture for Data-Intensive Experimental Research_, in short, GLADIER--a library designed to facilitate the authoring of **flows**, sequences of **actions** (e.g., running a program, transferring data, publishing data) associated with the processing of data from experimental facilities.
 
 This step-by-step guide to the use of Gladier and associated tools will prepare you to author and run multi-step flows.
 
@@ -22,7 +22,7 @@ A **client** is the code that defines all necessary information to run a flow. T
 
 ## Installing Gladier
 
-For full automation of an experiment, there is infrastructure setup that cannot be ignored. This is usually done once, after which you can focus on tool development. 
+For full automation of an experiment, there is infrastructure setup that cannot be ignored. This is usually done once, after which you can focus on tool development.
 
 We advise creating a new Python environment to run this tutorial. For simplicity, we use [miniconda](https://docs.conda.io/en/latest/miniconda.html):
 
@@ -42,13 +42,13 @@ In order to execute a remote function (the equivalent of a `lambda`) we use the 
 
 > Running the **Globus Compute Client** on a computer gives a flow the ability to `send` functions to be executed on that computer. (This computer may be a remote cluster of cloud, or alternatively the computer on which the flow client executes: Globus Compute runs the same in each case.) As we explore later, different parts of the flow can be executed on different computers by providing different `compute_endpoint` value for each part.
 
-The **Process** flow runs the function defined by `tools/simple_compute_tool.py` and imported into the client as `SimpleTool`. Gladier automatically checks for updates on the function definition and registers or re-registers (if the local function definition has changed) with the Globus Compute service. The UUID of this function is automatically populated in the flow definition. 
+The **Process** flow runs the function defined by `tools/simple_compute_tool.py` and imported into the client as `SimpleTool`. Gladier automatically checks for updates on the function definition and registers or re-registers (if the local function definition has changed) with the Globus Compute service. The UUID of this function is automatically populated in the flow definition.
 
 Before the execution the `input` variables need to be defined to contain **all** information necessary for the flow. In our case, that information includes two input parameters expected by `SimpleTool` (`name` and `wfile`) and the location of the computer where the function is to execute, `compute_endpoint`.
 
     flow_input = {
         'input': {
-            'name': args.name, 
+            'name': args.name,
             'wfile' : '/test/test.txt',
 
             # Globus Compute tutorial endpoint
@@ -58,36 +58,36 @@ Before the execution the `input` variables need to be defined to contain **all**
 
 At the next step in the execution, Gladier looks for changes in the Tool definition and tool sequence, then takes care of creating the flow definition and (re-)registering it with the globus automate service. Once a flow is created, it can be accessed in the globus webApp like the link below.
 
-    Flow created with ID: ddb9d6be-d48f-40df-a663-6bcc6db1bb76                                                              https://app.globus.org/flows/ddb9d6be-d48f-40df-a663-6bcc6db1bb76 
+    Flow created with ID: ddb9d6be-d48f-40df-a663-6bcc6db1bb76                                                              https://app.globus.org/flows/ddb9d6be-d48f-40df-a663-6bcc6db1bb76
 
 Once a flow is `.run()` it generates a unique UUID for that particular set of flow definition and payload. The log can also be accessed at the webApp:
 
-    Run started with ID: 6fa0969a-2778-4f7f-95d5-d365e89aca32                                                               https://app.globus.org/runs/6fa0969a-2778-4f7f-95d5-d365e89aca32 
+    Run started with ID: 6fa0969a-2778-4f7f-95d5-d365e89aca32                                                               https://app.globus.org/runs/6fa0969a-2778-4f7f-95d5-d365e89aca32
 
 Running the client again will not register a new flow with the globus service but will generate a new run instance.
 
 ### Best Practices:
 
 * We suggest keeping the client `def` outsite of the `__main__` function of the python file. Then creating an instance at `__main__` and using `.run()`.
-* Each tool in the flow have separate `required_inputs` that need to be included in the initial payload. 
+* Each tool in the flow have separate `required_inputs` that need to be included in the initial payload.
 * The `SimpleTool` and its driving function `simple_compute_function` are separated into a `tools` folder in a single file. We advise to create one python file per "action" in the flows. This makes development and debugging and tracing errors much simpler.
 * The `example_client.py` itself also is separated from the other clients in the folder and only contain one `GladierBaseClient`. This prevents instances being created with the 'wrong' flow definition or common mistakes on 'what is running'.
 
 
 ## Creating a flow with Transfer
 
-Our second example can be found at `simple_clients/example_client_transfer.py`. It transfer a file from our remote server into your workstation. 
+Our second example can be found at `simple_clients/example_client_transfer.py`. It transfer a file from our remote server into your workstation.
 In order to allow for transfer, the first step is to introduce the workstation in the the creates and executes another 1-step flow. This flow will create a file on the local filesystem and send it to our remote server.
 
 > Before executing this file, please create **Globus Endpoint** at your machine following the instructions at: `https://www.globus.org/globus-connect-personal` after the installation you will receive a UUID of your machine (which is now a `storage endpoint`) and update line 38 with your own uuid.
 
-    local_endpoint_id = 'cde22510-5de7-11ec-9b5c-f9dfb1abb183' 
+    local_endpoint_id = 'cde22510-5de7-11ec-9b5c-f9dfb1abb183'
 
 Now go ahead and execute the code.
 
     ./simple_clients/example_client_transfer.py
 
-Notice how in this case the `input` is different. Now defining the `source_id`, `source_path`, `remote_id`,`remote_path`.  
+Notice how in this case the `input` is different. Now defining the `source_id`, `source_path`, `remote_id`,`remote_path`.
 
     flow_input = {
         'input': {
@@ -122,7 +122,7 @@ The result is a new search index on the globus-search database which will serve 
        "display_name": "example-index",
        "id": "563c3d98-6fa8-4ef5-83e2-0f378efe0a5f",
        ...
-    }    
+    }
 
 The search index id `563c3d98-6fa8-4ef5-83e2-0f378efe0a5f` will be used so the flow knows where to send metadata too.
 
@@ -150,8 +150,8 @@ For simplicity, we start a new client in `/full_client` with a new set of `/tool
 The idea is to create the infrastructure based on the simple_examples and expand it into a flow with:
 
 * Transfer
-* Compute 
-* Compute 
+* Compute
+* Compute
 * Publish
 
 ### Defining the correct payload
@@ -177,7 +177,7 @@ Functions may already been created by you or others. You can importa a `GladierB
 
 ### Single Instance client
 
-Our flow now is defined on an executable file and can be integrated with any CLI based execution method. 
+Our flow now is defined on an executable file and can be integrated with any CLI based execution method.
 
 ### Creating an event based client
 
@@ -188,4 +188,4 @@ The watcher itself does not carry any information about the flow.
 
 ## You shall not pass!!
 
-Lets explore what was covered on the example before. 
+Lets explore what was covered on the example before.

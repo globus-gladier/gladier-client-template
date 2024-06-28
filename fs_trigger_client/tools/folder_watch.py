@@ -1,12 +1,12 @@
-
 import os
 import time
 
-from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
 
-class FileTrigger():
-    def __init__(self, folder_path, pattern='', ClientLogic=None):
+
+class FileTrigger:
+    def __init__(self, folder_path, pattern="", ClientLogic=None):
         self.observer = Observer()
         self.folder_path = folder_path
         self.pattern = pattern
@@ -15,11 +15,11 @@ class FileTrigger():
     def run(self):
         print("Simple FileTrigger Started")
         print("Pattern: " + self.pattern)
-        print('')
+        print("")
 
         if not self.ClientLogic:
-            print('No fallback function defined for events.')
-            print('Using system print()')
+            print("No fallback function defined for events.")
+            print("Using system print()")
             self.ClientLogic = print
 
         if not os.path.isdir(self.folder_path):
@@ -29,10 +29,10 @@ class FileTrigger():
 
         os.chdir(self.folder_path)
         print("Monitoring: " + self.folder_path)
-        print('')
+        print("")
 
         event_handler = Handler(self.ClientLogic)
-        self.observer.schedule(event_handler, self.folder_path, recursive = True)
+        self.observer.schedule(event_handler, self.folder_path, recursive=True)
         self.observer.start()
 
         try:
@@ -44,17 +44,17 @@ class FileTrigger():
 
         self.observer.join()
 
+
 class Handler(FileSystemEventHandler):
     def __init__(self, ClientLogic):
         super(FileSystemEventHandler).__init__()
         self.logic_function = ClientLogic
 
-
     def on_any_event(self, event):
-        #print(event)
+        # print(event)
         if event.is_directory:
             return None
-        elif event.event_type == 'created':
+        elif event.event_type == "created":
             self.logic_function(event.src_path)
             return None
         # elif event.event_type == 'modified':
